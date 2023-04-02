@@ -13,9 +13,11 @@ public class Place_Asa : MonoBehaviour
     [SerializeField]
     private GameObject prefab;
     [SerializeField]
-    private GameObject dialogueController;
+    private GameObject canvas;
     [SerializeField]
-    private GameObject fabCube;
+    private GameObject dialogueController;
+    //[SerializeField]
+    //private GameObject fabCube;
     private bool asaPlaced;
 
     private ARRaycastManager aRRaycastManager;
@@ -23,7 +25,7 @@ public class Place_Asa : MonoBehaviour
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     private GameObject obj;
-    private GameObject cube;
+   // private GameObject cube;
 
     private void Awake()
     {
@@ -31,22 +33,26 @@ public class Place_Asa : MonoBehaviour
         aRPlaneManager = GetComponent<ARPlaneManager>();
         asaPlaced = false;
     }
-
-    private IEnumerator Start()
+    public void PlaceAsaAllowed()
     {
-        yield return new WaitForSeconds(5f);
+        StartCoroutine(CoPlaceAsaAllowed());
+    }
+
+    private IEnumerator CoPlaceAsaAllowed()
+    {
+        int attemptCount = 0;
         while (!asaPlaced)
         {
             yield return new WaitForSeconds(.5f);
             //UnityEngine.Debug.Log(Camera.main.transform.forward);
-            Ray ray = new Ray(Camera.main.transform.position, new Vector3(Camera.main.transform.forward.x, Camera.main.transform.forward.y - .35f, Camera.main.transform.forward.z));
+            Ray ray = new Ray(Camera.main.transform.position, new Vector3(Camera.main.transform.forward.x, -.75f, Camera.main.transform.forward.z));
 
             if (aRRaycastManager.Raycast(ray, hits, TrackableType.PlaneWithinPolygon))
             {
                 asaPlaced = true;
                 Pose pose = hits[0].pose;
                 obj = Instantiate(prefab, pose.position, pose.rotation);
-                cube = Instantiate(fabCube, pose.position, pose.rotation);
+                //cube = Instantiate(fabCube, pose.position, pose.rotation);
                 UnityEngine.Debug.Log("i created an asa");
                 //anim = GetComponent<Animation>();
 
@@ -63,11 +69,16 @@ public class Place_Asa : MonoBehaviour
                 dialogueController.GetComponent<DialogueTrigger>().TriggerDialogue();
 
             }
-            UnityEngine.Debug.Log(asaPlaced);
-        }
-        while (true)
-        {
-            yield return new WaitForSeconds(.3f);
+            else
+            {
+                attemptCount++;
+                if (attemptCount >= 15)
+                {
+                    canvas.GetComponent<AR_Asa_UI>().PlaceFail();
+                    attemptCount = 0;
+                    yield return new WaitForSeconds(2.8f);
+                }
+            }
         }
     }
 }

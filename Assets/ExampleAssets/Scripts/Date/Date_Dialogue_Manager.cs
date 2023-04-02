@@ -22,7 +22,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
         dialogueBox.enabled = false;
     }
 
-    public void StartDialogue (Dialogue dialogue)
+    public void StartDialogue (string[] dialogue)
     {
         UnityEngine.Debug.Log("Dialogue Started");
         dialogueBox.enabled = true;
@@ -30,7 +30,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
 
         sentences.Clear();
 
-        foreach (string sentence in dialogue.sentences)
+        foreach (string sentence in dialogue)
         {
             sentences.Enqueue(sentence);
         }

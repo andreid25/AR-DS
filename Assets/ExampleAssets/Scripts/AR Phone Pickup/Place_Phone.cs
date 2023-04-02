@@ -37,9 +37,53 @@ public class Place_Phone : MonoBehaviour
     public void PlacePhoneAllowed()
     {
         canPlace = true;
+        StartCoroutine(CoPlacePhoneAllowed());
     }
 
-    //methoda for tapping and untapping screen
+    public IEnumerator CoPlacePhoneAllowed()
+    {
+        int attemptCount = 0;
+        while (canPlace)
+        {
+            yield return new WaitForSeconds(.2f);
+            //UnityEngine.Debug.Log(Camera.main.transform.forward);
+            Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
+            if (aRRaycastManager.Raycast(ray, hits, TrackableType.PlaneWithinPolygon))
+            {
+                canPlace = false;
+                pose = hits[0].pose;
+                GameObject obj = Instantiate(prefab, pose.position, pose.rotation);
+
+                Vector3 position = obj.transform.position;
+                position.y = 0f;
+                Vector3 cameraPosition = Camera.main.transform.position;
+                cameraPosition.y = 0f;
+                Vector3 direction = cameraPosition - position;
+                Quaternion targetRoation = Quaternion.LookRotation(direction);
+                obj.transform.rotation = targetRoation;
+
+                //GameObject objTwo = Instantiate(prefabTwo, pose.position, pose.rotation);
+
+                //set color is not working on the object
+                //prefab.GetComponent<Renderer>().sharedMaterial.color = new Color(255, 0, 255);
+                StartCoroutine(WaitingToAllow());
+
+            }
+            else
+            {
+                attemptCount++;
+                if (attemptCount >= 40)
+                {
+                    canvas.GetComponent<AR_Pone_UI>().PlaceFail();
+                    attemptCount = 0;
+                    yield return new WaitForSeconds(2.8f);
+                }
+            }
+        }
+    }
+
+
+    /*//methoda for tapping and untapping screen
     private void OnEnable()
     {
         EnhancedTouch.TouchSimulation.Enable();
@@ -87,11 +131,11 @@ public class Place_Phone : MonoBehaviour
         {
             canvas.GetComponent<AR_Pone_UI>().PlaceFail();
         }
-    }
+    } */
 
     IEnumerator WaitingToAllow()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         //objTwo.GetComponent<Renderer>().material.color = new Color(0, 0, 255);
         //prefab.GetComponent<Renderer>().sharedMaterial.color = new Color(0, 0, 255);
         prefab.GetComponent<Phone_Model_Script>().TapPhoneAllow();

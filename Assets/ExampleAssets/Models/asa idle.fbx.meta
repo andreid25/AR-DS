@@ -6,7 +6,32 @@ ModelImporter:
   - first:
       74: 1827226128182048838
     second: Take 001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: datable_character_t_pose_merged_pasted__Hair
+    second: {fileID: 2100000, guid: 804289107017ad649bc4ba0512e9788a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: datable_character_t_pose_merged_pasted__Upper body
+    second: {fileID: 2100000, guid: 92897240905240a42a955ffb881ba5fc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: datable_character_t_pose_merged_pasted__eye
+    second: {fileID: 2100000, guid: a42f8a1259ab6614c8a337cc3f9a5481, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: datable_character_t_pose_merged_pasted__head
+    second: {fileID: 2100000, guid: a2b22e01308b1734fbb51f2f6ac2dd97, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: datable_character_t_pose_merged_pasted__lower body
+    second: {fileID: 2100000, guid: 576610c4bc680734f953247401f5b718, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -120,7 +145,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.099999994
+    globalScale: 10
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
