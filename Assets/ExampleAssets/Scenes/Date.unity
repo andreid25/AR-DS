@@ -716,7 +716,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a0318c15c716e458f84c3bee79d9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8238474700017125677, guid: d4e64b4b0d87e75439545c6ad379e326, type: 3}
+  prefab: {fileID: 5250163643478804260, guid: d4e64b4b0d87e75439545c6ad379e326, type: 3}
   canvas: {fileID: 1536553148}
   dialogueController: {fileID: 1683438476}
 --- !u!1 &594330285

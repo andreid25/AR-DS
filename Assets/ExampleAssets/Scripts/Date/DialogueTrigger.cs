@@ -43,6 +43,7 @@ public class DialogueTrigger : MonoBehaviour
                 options.Add("You're looking even cuter Asa.");
                 options.Add("I know, but so are you.");
                 FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options);
+                FindObjectOfType<AsaAnimationManager>().Pleased();
             }
             else if (setPart == 2)
             {
@@ -59,6 +60,7 @@ public class DialogueTrigger : MonoBehaviour
                 dialogue.Add("Well, this would be the part where we walk together but that hasn't been programmed yet!");
                 options.Add("Bummer.");
                 FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options);
+                FindObjectOfType<AsaAnimationManager>().Pleased();
             }
         }
     }
