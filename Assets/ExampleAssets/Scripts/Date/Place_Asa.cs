@@ -66,7 +66,7 @@ public class Place_Asa : MonoBehaviour
                 //objRotation.y = 180f;
                 yield return new WaitForSeconds(6.2f);
                 UnityEngine.Debug.Log(asaPlaced);
-                dialogueController.GetComponent<DialogueTrigger>().TriggerDialogue();
+                dialogueController.GetComponent<DialogueTrigger>().StartDateDialogue1();
 
             }
             else
