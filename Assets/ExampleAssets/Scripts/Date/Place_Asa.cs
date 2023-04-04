@@ -87,5 +87,6 @@ public class Place_Asa : MonoBehaviour
         UnityEngine.Debug.Log("hi");
         Destroy(obj);
     }
+    
 }
 

@@ -47,6 +47,8 @@ public class Phone_Menus : MonoBehaviour
         settingsText.enabled = true;
         dateHereText.enabled = false;
         startDateText.enabled = false;
+
+        FindObjectOfType<Asa_Plush>().Reset();
     }
     
     /*private IEnumerator Start()
@@ -95,6 +97,34 @@ public class Phone_Menus : MonoBehaviour
         settingsText.enabled = false;
         dateHereText.enabled = true;
         startDateText.enabled = true;
+    }
+    public void CollectionMenu()
+    {
+        //initialize perma UI
+        batteryOutside.enabled = true;
+        batteryInside.enabled = true;
+        bottomBar.enabled = true;
+        homeButton.enabled = true;
+
+        //initialize phone menu
+        phoneBG.enabled = false;
+        dateButton.enabled = false;
+        collectionButton.enabled = false;
+        settingsButton.enabled = false;
+
+        //date screen
+        dateBG.enabled = false;
+        backButton.enabled = true;
+        dateHeart.enabled = false;
+        startDateButton.enabled = false;
+
+        //texts
+        time.enabled = true;
+        dateText.enabled = false;
+        collectionText.enabled = false;
+        settingsText.enabled = false;
+        dateHereText.enabled = false;
+        startDateText.enabled = false;
     }
     public void StartDate()
     {

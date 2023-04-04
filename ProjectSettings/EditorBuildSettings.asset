@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/ExampleAssets/Scenes/PhonePickup.unity
     guid: 12eaa4dca0c0f214f9ea45d512db5b51
-  - enabled: 1
+  - enabled: 0
     path: Assets/ExampleAssets/Scenes/PhoneMenus.unity
     guid: 3f3e9a75811e387449eeddf843cb268b
   - enabled: 1
