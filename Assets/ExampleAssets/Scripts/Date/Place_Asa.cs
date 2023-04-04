@@ -81,5 +81,11 @@ public class Place_Asa : MonoBehaviour
             }
         }
     }
+
+    public void DestroyAsa()
+    {
+        UnityEngine.Debug.Log("hi");
+        Destroy(obj);
+    }
 }
 

@@ -31,11 +31,13 @@ public class DialogueTrigger : MonoBehaviour
                 else if (responseGiven == 2)
                 {
                     dialogue.Add("I'm glad to hear that!");
+                    FindObjectOfType<AsaAnimationManager>().Pleased();
                 }
                 else if (responseGiven == 3)
                 {
                     dialogue.Add("Hehe, I'm very excited for this too!");
                     dialogue.Add("Though I am also a bit nervous.");
+                    FindObjectOfType<AsaAnimationManager>().Pleased();
                 }
                 dialogue.Add("I have to say, you look really cute today... hehe.");
                 setPart = 2;
@@ -43,7 +45,6 @@ public class DialogueTrigger : MonoBehaviour
                 options.Add("You're looking even cuter Asa.");
                 options.Add("I know, but so are you.");
                 FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options);
-                FindObjectOfType<AsaAnimationManager>().Pleased();
             }
             else if (setPart == 2)
             {
@@ -62,7 +63,33 @@ public class DialogueTrigger : MonoBehaviour
                 FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options);
                 FindObjectOfType<AsaAnimationManager>().Pleased();
             }
+            else if (setPart == 3)
+            {
+                setPart = 4;
+                StartCoroutine(GiveYouItem());
+            }
+            else if (setPart == 4)
+            {
+                setPart = 5;
+                dialogue.Add("Tee-hee... okgottarunbyeeeeeeeeeee");
+                options.Add("Huh?");
+                FindObjectOfType<AsaAnimationManager>().ItemTakeRun();
+                FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options);
+            }
+            else if (setPart == 5)
+            {
+                FindObjectOfType<AR_Asa_UI>().DateEnd(1);
+            }
         }
+    }
+    private IEnumerator GiveYouItem()
+    {
+        FindObjectOfType<AsaAnimationManager>().GiveYouRun();
+        yield return new WaitForSeconds(3f);
+        dialogue.Add("I have something for you... just take it it's a bit embarassing but I made it myself...");
+        options.Add("This is adorable! Thanks! (Take the item)");
+        options.Add("Sure I'll take it. (Take the item)");
+        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options);
     }
 
     public void StartDateDialogue1()

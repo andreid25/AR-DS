@@ -8,7 +8,8 @@ using TMPro;
 public class AR_Asa_UI : MonoBehaviour
 {
     [SerializeField] private CanvasGroup blackBG, startText, startButton, startButtonText, failText;
-    [SerializeField] private Button startButtonEnabler;
+    [SerializeField] private CanvasGroup completeText, youGotText, rewardImage, rewardName, mainMenuButton, mainMenuButtonText;
+    [SerializeField] private Button startButtonEnabler, mainMenuButtonEnabler;
     [SerializeField] private GameObject aRScriptObject;
 
     void Awake()
@@ -19,6 +20,14 @@ public class AR_Asa_UI : MonoBehaviour
         startButtonText.alpha = 0;
         failText.alpha = 0;
         startButtonEnabler.interactable = false;
+
+        completeText.alpha = 0;
+        youGotText.alpha = 0;
+        rewardImage.alpha = 0;
+        rewardName.alpha = 0;
+        mainMenuButton.alpha = 0;
+        mainMenuButtonText.alpha = 0;
+        mainMenuButtonEnabler.interactable = false;
     }
     private void Start()
     {
@@ -54,6 +63,28 @@ public class AR_Asa_UI : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         failText.DOFade(0, 1.0f);
+    }
+
+    public void DateEnd(int rewardID)
+    {
+        StartCoroutine(CoDateEnd());
+        blackBG.DOFade(1, 1.5f);
+        youGotText.DOFade(1, 1.5f);
+        rewardImage.DOFade(1, 1.5f);
+        completeText.DOFade(1, 1.5f);
+        rewardName.DOFade(1, 1.5f);
+        mainMenuButton.DOFade(1, 1.5f);
+        mainMenuButtonText.DOFade(1, 1.5f);
+    }
+    private IEnumerator CoDateEnd()
+    {
+        yield return new WaitForSeconds(1.5f);
+        mainMenuButtonEnabler.interactable = true;
+    }
+
+    public void MainMenuReturn()
+    {
+        Loader.Load(Loader.Scene.PhoneMenus);
     }
 
 }
