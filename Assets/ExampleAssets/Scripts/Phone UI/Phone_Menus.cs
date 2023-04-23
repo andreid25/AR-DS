@@ -10,7 +10,7 @@ public class Phone_Menus : MonoBehaviour
 {
     [SerializeField] private Image phoneBG, bottomBar, homeButton, dateButton, collectionButton, settingsButton, dateBG, backButton, dateHeart;
     [SerializeField] private Image batteryOutside, batteryInside, startDateButton;
-    [SerializeField] private TMP_Text time, dateText, collectionText, settingsText, dateHereText, startDateText; 
+    [SerializeField] private TMP_Text time, dateText, collectionText, settingsText, dateHereText, startDateText, collectionHeader;
 
     void Awake()
     {
@@ -47,6 +47,7 @@ public class Phone_Menus : MonoBehaviour
         settingsText.enabled = true;
         dateHereText.enabled = false;
         startDateText.enabled = false;
+        collectionHeader.enabled = false;
 
         FindObjectOfType<Asa_Plush>().Reset();
     }
@@ -97,6 +98,7 @@ public class Phone_Menus : MonoBehaviour
         settingsText.enabled = false;
         dateHereText.enabled = true;
         startDateText.enabled = true;
+        collectionHeader.enabled = false;
     }
     public void CollectionMenu()
     {
@@ -125,6 +127,7 @@ public class Phone_Menus : MonoBehaviour
         settingsText.enabled = false;
         dateHereText.enabled = false;
         startDateText.enabled = false;
+        collectionHeader.enabled = true;
     }
     public void StartDate()
     {

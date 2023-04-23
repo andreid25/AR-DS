@@ -24,7 +24,7 @@ public class Asa_Plush : MonoBehaviour
         if (isSelected)
         {
             isSelected = false;
-            plush.transform.DOMove(new Vector3(500, -200, 2700), .5f);
+            plush.transform.DOMove(new Vector3(500, -350, 2700), .5f);
             plush.transform.DORotate(new Vector3(0, 180, 0), .5f);
             plush.transform.DOScale(new Vector3(2500, 2500, 2500), .5f);
 
@@ -52,7 +52,7 @@ public class Asa_Plush : MonoBehaviour
     public void Reset()
     {
         isSelected = false;
-        plush.transform.position = new Vector3(500, -200, 2700);
+        plush.transform.position = new Vector3(500, -350, 2700);
         plush.transform.eulerAngles = new Vector3(0, 180, 0);
         plush.transform.localScale = new Vector3(2500, 2500, 2500);
     }

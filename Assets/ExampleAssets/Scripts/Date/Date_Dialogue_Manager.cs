@@ -4,6 +4,7 @@ using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Linq.Expressions;
 
 public class Date_Dialogue_Manager : MonoBehaviour
 {
@@ -12,15 +13,16 @@ public class Date_Dialogue_Manager : MonoBehaviour
 
     [SerializeField] private Animator dialogueAnimator, options1Animator, options2Animator, options3Animator;
 
-    private Queue<string> sentences;
+    private Queue<string> sentences = new Queue<string>();
     private bool dialogueActive;
     private List<string> responses = new List<string>();
+    private Queue<string> anims = new Queue<string>();
     private int responseGiven = 0;
+    private string currentAnim = "";
 
     // Start is called before the first frame update
     void Awake()
     {
-        sentences = new Queue<string>();
         dialogueBox.enabled = false;
         optionsBox1.enabled = false;
         optionsBox2.enabled = false;
@@ -37,26 +39,67 @@ public class Date_Dialogue_Manager : MonoBehaviour
         options3Animator.SetBool("OptionsOpen", false);
     }
 
-    public void StartDialogue (List<string> dialogue, List<string> options)
+    public void StartDialogue (List<string> dialogue, List<string> options, List<string> animsGiven)
     {
+        UnityEngine.Debug.Log("In StartDialogue()");
         responses = options;
-        UnityEngine.Debug.Log("Dialogue Started");
+
         dialogueBox.enabled = true;
         dialogueText.enabled = true;
         dialogueAnimator.SetBool("IsOpen", true);
 
         sentences.Clear();
+        anims.Clear();
 
         foreach (string sentence in dialogue)
         {
+            UnityEngine.Debug.Log(sentence);
             sentences.Enqueue(sentence);
         }
+        foreach (string animation in animsGiven)
+        {
+            anims.Enqueue(animation);
+        }
+        UnityEngine.Debug.Log(sentences);
 
         DisplayNextSentence();
+        AnimationQueue();
     }
 
+    //call appropriate function for animation manager
+    private void AnimationQueue()
+    {
+        UnityEngine.Debug.Log("Reached queue");
+        string animToPlay = anims.Dequeue();
+        if (currentAnim == animToPlay)
+        {
+            return;
+        }
+        currentAnim = animToPlay;
+        switch (animToPlay)
+        {
+            case "idle":
+                FindObjectOfType<AsaAnimationManager>().Idle();
+                break;
+            case "pleased":
+                FindObjectOfType<AsaAnimationManager>().Pleased();
+                break;
+            case "dissapointed":
+                FindObjectOfType<AsaAnimationManager>().Dissapointed();
+                break;
+            case "nya":
+                FindObjectOfType<AsaAnimationManager>().Nya();
+                break;
+            default:
+                // code block
+                break;
+        }
+    }
+
+    //displays the next sentence by creating a queue
     public void DisplayNextSentence()
     {
+        UnityEngine.Debug.Log("In DisplayNextSentence()");
         if (sentences.Count == 0)
         {
             if (responses.Count != 0)
@@ -77,6 +120,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
 
     IEnumerator TypeSentence (string sentence)
     {
+        UnityEngine.Debug.Log("In TypeSentence()");
         dialogueText.text = "";
         foreach(char letter in sentence.ToCharArray())
         {
@@ -180,6 +224,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began) && dialogueBox.enabled)
         {
             DisplayNextSentence();
+            AnimationQueue();
         }
     }
 }
