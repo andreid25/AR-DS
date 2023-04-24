@@ -21,6 +21,8 @@ public class AR_Pone_UI : MonoBehaviour
         failText.alpha = 0;
         startButton.alpha = 0;
         startButtonText.alpha = 0;
+
+        FindObjectOfType<GlobalData>().Reset();
     }
     private void Start()
     {

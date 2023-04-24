@@ -46,7 +46,7 @@ public class DialogueTrigger : MonoBehaviour
                         break;
                 }
                 dialogue.Add("I have to say, you look really cute today... hehe.");
-                anims.Add("nya");
+                anims.Add("idle");
 
                 options.Add("I'm bored.");
                 options.Add("You're looking even cuter Asa.");
@@ -109,6 +109,7 @@ public class DialogueTrigger : MonoBehaviour
             }
             else if (setPart == 3)
             {
+                FindObjectOfType<GlobalData>().PlushAcquired();
                 FindObjectOfType<AR_Asa_UI>().DateEnd(1);
             }
         }

@@ -137,7 +137,8 @@ public class Place_Asa : MonoBehaviour
 
             UnityEngine.Debug.Log("Rotation change: " + Vector3.Distance(camAngleStart, camAngleEnd));
             //UnityEngine.Debug.Log(Vector3.Distance(camPosStart, camPosEnd));
-            if (Vector3.Distance(camPosStart, camPosEnd) > .1f || Vector3.Distance(camAngleStart, camAngleEnd) > 100f) //change float for movement threshold to rotate
+            if (Vector3.Distance(camPosStart, camPosEnd) > .1f)
+            //if (Vector3.Distance(camPosStart, camPosEnd) > .1f || Vector3.Distance(camAngleStart, camAngleEnd) > 100f) //change float for movement threshold to rotate
             {
                 asaObj.transform.DORotate(targetRotation.eulerAngles, timeBetweenMove);
                 stillCount = 0;

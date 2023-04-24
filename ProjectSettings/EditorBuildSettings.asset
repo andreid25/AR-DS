@@ -8,7 +8,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/ExampleAssets/Scenes/PhonePickup.unity
     guid: 12eaa4dca0c0f214f9ea45d512db5b51
-  - enabled: 0
+  - enabled: 1
     path: Assets/ExampleAssets/Scenes/PhoneMenus.unity
     guid: 3f3e9a75811e387449eeddf843cb268b
   - enabled: 1

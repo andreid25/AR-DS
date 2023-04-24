@@ -98,7 +98,7 @@ public class AsaAnimationManager : MonoBehaviour
     {
         UnityEngine.Debug.Log("In CatEars()");
         realEars = Instantiate(catEars, topOfHead.transform.position, topOfHead.transform.rotation);
-        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("idle")))
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
         {
             realEars.transform.position = topOfHead.transform.position;
             realEars.transform.eulerAngles = new Vector3(topOfHead.transform.eulerAngles.x, topOfHead.transform.eulerAngles.y, topOfHead.transform.eulerAngles.z);

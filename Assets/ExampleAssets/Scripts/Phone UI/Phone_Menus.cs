@@ -8,12 +8,23 @@ using TMPro;
 
 public class Phone_Menus : MonoBehaviour
 {
-    [SerializeField] private Image phoneBG, bottomBar, homeButton, dateButton, collectionButton, settingsButton, dateBG, backButton, dateHeart;
     [SerializeField] private Image batteryOutside, batteryInside, startDateButton;
-    [SerializeField] private TMP_Text time, dateText, collectionText, settingsText, dateHereText, startDateText, collectionHeader;
+    [SerializeField] private TMP_Text time, collectionHeader;
+    [SerializeField] private GameObject phoneBG, bottomBar, dateBG, settingsOptions, settingsBG, topBar, credits, backButton, plushText, noItemsText;
+
+    [SerializeField] private GameObject soundsOption, notificationsOption, maleOption, femaleOption, enbyOption; //settings options
+
+    private bool soundsOn, notificationsOn, maleOn, femaleOn, enbyOn;
 
     void Awake()
     {
+        soundsOn = true;
+        notificationsOn = true;
+        maleOn = true;
+        femaleOn = true;
+
+        //TEST CODE delete later
+
     }
     void Start()
     {
@@ -25,31 +36,28 @@ public class Phone_Menus : MonoBehaviour
         //initialize perma UI
         batteryOutside.enabled = true;
         batteryInside.enabled = true;
-        bottomBar.enabled = true;
-        homeButton.enabled = true;
+        bottomBar.SetActive(true);
+        topBar.SetActive(false);
+        backButton.SetActive(false);
 
         //initialize phone menu
-        phoneBG.enabled = true;
-        dateButton.enabled = true;
-        collectionButton.enabled = true;
-        settingsButton.enabled = true;
+        phoneBG.SetActive(true);
 
         //date screen
-        dateBG.enabled = false;
-        backButton.enabled = false;
-        dateHeart.enabled = false;
-        startDateButton.enabled = false;
+        dateBG.SetActive(false);
 
         //texts
         time.enabled = true;
-        dateText.enabled = true;
-        collectionText.enabled = true;
-        settingsText.enabled = true;
-        dateHereText.enabled = false;
-        startDateText.enabled = false;
         collectionHeader.enabled = false;
+        noItemsText.SetActive(false);
 
-        FindObjectOfType<Asa_Plush>().Reset();
+        settingsOptions.SetActive(false);
+        settingsBG.SetActive(false);
+        credits.SetActive(false);
+
+        plushText.SetActive(false);
+
+        FindObjectOfType<AsaPlush>().Reset();
     }
     
     /*private IEnumerator Start()
@@ -74,61 +82,138 @@ public class Phone_Menus : MonoBehaviour
     public void DateMenu()
     {
         //initialize perma UI
-        batteryOutside.enabled = true;
-        batteryInside.enabled = true;
-        bottomBar.enabled = true;
-        homeButton.enabled = true;
+        topBar.SetActive(false);
+        backButton.SetActive(true);
 
         //initialize phone menu
-        phoneBG.enabled = false;
-        dateButton.enabled = false;
-        collectionButton.enabled = false;
-        settingsButton.enabled = false;
+        phoneBG.SetActive(false);
 
         //date screen
-        dateBG.enabled = true;
-        backButton.enabled = true;
-        dateHeart.enabled = true;
-        startDateButton.enabled = true;
-
-        //texts
-        time.enabled = true;
-        dateText.enabled = false;
-        collectionText.enabled = false;
-        settingsText.enabled = false;
-        dateHereText.enabled = true;
-        startDateText.enabled = true;
-        collectionHeader.enabled = false;
+        dateBG.SetActive(true);
     }
     public void CollectionMenu()
     {
+        if (!(FindObjectOfType<GlobalData>().CollectionActive()))
+        {
+            noItemsText.SetActive(true);
+        }
         //initialize perma UI
-        batteryOutside.enabled = true;
-        batteryInside.enabled = true;
-        bottomBar.enabled = true;
-        homeButton.enabled = true;
+        topBar.SetActive(true);
+        backButton.SetActive(true);
 
         //initialize phone menu
-        phoneBG.enabled = false;
-        dateButton.enabled = false;
-        collectionButton.enabled = false;
-        settingsButton.enabled = false;
+        phoneBG.SetActive(false);
 
-        //date screen
-        dateBG.enabled = false;
-        backButton.enabled = true;
-        dateHeart.enabled = false;
-        startDateButton.enabled = false;
-
-        //texts
-        time.enabled = true;
-        dateText.enabled = false;
-        collectionText.enabled = false;
-        settingsText.enabled = false;
-        dateHereText.enabled = false;
-        startDateText.enabled = false;
         collectionHeader.enabled = true;
     }
+    public void Settings()
+    {
+        //initialize perma UI
+        topBar.SetActive(true);
+        backButton.SetActive(true);
+
+        //initialize phone menu
+        phoneBG.SetActive(false);
+
+
+        settingsOptions.SetActive(true);
+        settingsBG.SetActive(true);
+    }
+    public void Credits()
+    {
+        //initialize perma UI
+        topBar.SetActive(true);
+        backButton.SetActive(true);
+
+        //initialize phone menu
+        phoneBG.SetActive(false);
+        collectionHeader.enabled = false;
+
+        settingsOptions.SetActive(false);
+        credits.SetActive(true);
+    }
+
+    public void CollectionObjectShow(string objID)
+    {
+        if (objID == "plush")
+        {
+            plushText.SetActive(true);
+        }
+    }
+    public void CollectionObjectBack(string objID)
+    {
+        if (objID == "plush")
+        {
+            plushText.SetActive(false);
+        }
+    }
+
+    public void SoundsButton()
+    {
+        if (soundsOn)
+        {
+            soundsOn = false;
+            soundsOption.SetActive(false);
+        }
+        else
+        {
+            soundsOn = true;
+            soundsOption.SetActive(true);
+        }
+    }
+    public void NotificationsButton()
+    {
+        if (notificationsOn)
+        {
+            notificationsOn = false;
+            notificationsOption.SetActive(false);
+        }
+        else
+        {
+            notificationsOn = true;
+            notificationsOption.SetActive(true);
+        }
+    }
+    public void HeHimButton()
+    {
+        if (maleOn)
+        {
+            maleOn = false;
+            maleOption.SetActive(false);
+        }
+        else
+        {
+            maleOn = true;
+            maleOption.SetActive(true);
+        }
+    }
+    public void SheHerButton()
+    {
+        if (femaleOn)
+        {
+            femaleOn = false;
+            femaleOption.SetActive(false);
+        }
+        else
+        {
+            femaleOn = true;
+            femaleOption.SetActive(true);
+        }
+    }
+    public void TheyThemButton()
+    {
+        if (enbyOn)
+        {
+            enbyOn = false;
+            enbyOption.SetActive(false);
+        }
+        else
+        {
+            enbyOn = true;
+            enbyOption.SetActive(true);
+        }
+    }
+
     public void StartDate()
     {
         Loader.Load(Loader.Scene.Date);
