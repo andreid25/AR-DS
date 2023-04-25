@@ -18,6 +18,7 @@ public class AsaAnimationManager : MonoBehaviour
         asaAnimator.SetBool("IsGivingRun", false);
         asaAnimator.SetBool("ItemTaken", false);
         plushExists = false;
+        //headLooking = true;
     }
 
     public void Idle()
@@ -109,7 +110,7 @@ public class AsaAnimationManager : MonoBehaviour
 
     public void GiveYouRun()
     {
-        NoLook();
+        NoLook(2f);
         StartCoroutine(CoGiveYouRun());
     }
     private IEnumerator CoGiveYouRun()
@@ -142,32 +143,38 @@ public class AsaAnimationManager : MonoBehaviour
         FindObjectOfType<Place_Asa>().DestroyAsa();
     }
 
-    public void NoLook()
+    public void NoLook(float time)
     {
-        StartCoroutine(CoNoLook());
+        /*if (headLooking)
+        {
+            headLooking = false;*/
+            StartCoroutine(CoNoLook(time));
+        //}
     }
-    private IEnumerator CoNoLook()
+    private IEnumerator CoNoLook(float time)
     {
         float elapsedTime = 0;
-        float waitTime = 2f;
-        while (elapsedTime < waitTime)
+        while (elapsedTime < time)
         {
-            head.weight = (Mathf.Lerp(100, 0, (elapsedTime / waitTime))/100);
+            head.weight = (Mathf.Lerp(100, 0, (elapsedTime / time))/100);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
     }
-    public void Look()
+    public void Look(float time)
     {
-        StartCoroutine(CoLook());
+        /*if (!headLooking)
+        {
+            headLooking = true;*/
+            StartCoroutine(CoLook(time));
+        //}
     }
-    private IEnumerator CoLook()
+    private IEnumerator CoLook(float time)
     {
         float elapsedTime = 0;
-        float waitTime = 2f;
-        while (elapsedTime < waitTime)
+        while (elapsedTime < time)
         {
-            head.weight = (Mathf.Lerp(100, 0, (elapsedTime / waitTime)) / 100);
+            head.weight = (Mathf.Lerp(0, 100, (elapsedTime / time)) / 100);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -175,7 +182,6 @@ public class AsaAnimationManager : MonoBehaviour
 
     public void SkippingStart()
     {
-        NoLook();
         asaAnimator.SetBool("IsSkipping", true);
         FindObjectOfType<Place_Asa>().SkippingControl();
         FindObjectOfType<AR_Asa_UI>().Skipping();

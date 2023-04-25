@@ -7,6 +7,7 @@ using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 using EnhancedTouch = UnityEngine.InputSystem.EnhancedTouch;
 using DG.Tweening;
+using System;
 
 [RequireComponent(typeof(ARRaycastManager), typeof(ARPlaneManager))]
 public class Place_Asa : MonoBehaviour
@@ -87,6 +88,7 @@ public class Place_Asa : MonoBehaviour
 
     public void SkippingControl()
     {
+        Destroy(GetComponent<ARAnchor>());
         isSkipping = true;
         StartCoroutine(CoSkippingControl());
     }
@@ -96,51 +98,44 @@ public class Place_Asa : MonoBehaviour
         float timeBetweenMove = .3f;
 
         int stillCount = 0;
+        float lookTimer = 0;
+        float timetoLook = UnityEngine.Random.Range(1.5f, 5.0f);
+        bool isLooking = true;
 
         Vector3 camPointCalc = new Vector3(Camera.main.transform.position.x, asaObj.transform.position.y, Camera.main.transform.position.z);
         float asaCamDistance = Vector3.Distance(camPointCalc, asaObj.transform.position);
         while (isSkipping)
         {
-            Vector3 camPosStart = Camera.main.transform.position;
-            Vector3 camAngleStart = Camera.main.transform.eulerAngles;
+            Vector3 asaStartLocation = asaObj.transform.position;
 
             yield return new WaitForSeconds(timeBetweenMove);
 
-            Vector3 camPosEnd = Camera.main.transform.position;
-            Vector3 camAngleEnd = Camera.main.transform.eulerAngles;
+            Vector3 newCamPos = Camera.main.transform.position;
 
-            //determine where asa should face
-            camPosStart.y = 0f;
-            camPosEnd.y = 0f;
-            Vector3 direction = camPosEnd - camPosStart;
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            //asaObj.transform.rotation = targetRotation;
-            
-
-            Vector3 moveTo = Camera.main.transform.position + Camera.main.transform.forward * asaCamDistance;
+            //calvulate where asa should move to
+            Vector3 moveTo = newCamPos + Camera.main.transform.forward * asaCamDistance;
             moveTo.y = asaObj.transform.position.y;
 
             //change Asa's y pos if new plane detected
             Ray ray = new Ray(Camera.main.transform.position, new Vector3(Camera.main.transform.forward.x, -.75f, Camera.main.transform.forward.z));
             if (aRRaycastManager.Raycast(ray, hits, TrackableType.PlaneWithinPolygon))
             {
-                //UnityEngine.Debug.Log("In if");
                 Pose pose = hits[0].pose;
                 moveTo.y = pose.position.y;
-
-                //asaObj.transform.DORotate(targetRotation.eulerAngles, timeBetweenMove);
             }
+
+            //determine where asa should face
+            Vector3 moveToNoY = new Vector3(moveTo.x, 0, moveTo.z);
+            Vector3 asaStartLocationNoY = new Vector3(asaStartLocation.x, 0, asaStartLocation.z);
+            Vector3 direction = moveToNoY - asaStartLocationNoY;
+            Quaternion asaLookAngle = Quaternion.LookRotation(direction);
 
             //move asa
             asaObj.transform.DOMove(moveTo, timeBetweenMove);
 
-
-            UnityEngine.Debug.Log("Rotation change: " + Vector3.Distance(camAngleStart, camAngleEnd));
-            //UnityEngine.Debug.Log(Vector3.Distance(camPosStart, camPosEnd));
-            if (Vector3.Distance(camPosStart, camPosEnd) > .1f)
-            //if (Vector3.Distance(camPosStart, camPosEnd) > .1f || Vector3.Distance(camAngleStart, camAngleEnd) > 100f) //change float for movement threshold to rotate
+            if (Vector3.Distance(asaStartLocation, moveTo) > .3f) //TODO Change this so it calcs how much asa moves
             {
-                asaObj.transform.DORotate(targetRotation.eulerAngles, timeBetweenMove);
+                asaObj.transform.DORotate(asaLookAngle.eulerAngles, timeBetweenMove);
                 stillCount = 0;
             }
             //check if asa is staying still so they can look at you
@@ -151,9 +146,30 @@ public class Place_Asa : MonoBehaviour
                 {
                     Vector3 asaPosition3 = asaObj.transform.position;
                     asaPosition3.y = 0f;
-                    Vector3 direction3 = camPosEnd - asaPosition3;
+                    Vector3 newCamPosNoY = new Vector3(newCamPos.x, 0, newCamPos.z);
+                    Vector3 direction3 = newCamPosNoY - asaPosition3;
                     Quaternion targetRotation3 = Quaternion.LookRotation(direction3);
                     asaObj.transform.DORotate(targetRotation3.eulerAngles, timeBetweenMove);
+                }
+            }
+            //look over at you
+            lookTimer += timeBetweenMove;
+            if (lookTimer >= timetoLook)
+            {
+                lookTimer = 0f;
+                if (isLooking)
+                {
+                    UnityEngine.Debug.Log("Looking away");
+                    isLooking = false;
+                    FindObjectOfType<AsaAnimationManager>().NoLook(.4f);
+                    timetoLook = UnityEngine.Random.Range(5f, 15f);
+                }
+                else
+                {
+                    UnityEngine.Debug.Log("Looking at u");
+                    isLooking = true;
+                    FindObjectOfType<AsaAnimationManager>().Look(.4f);
+                    timetoLook = UnityEngine.Random.Range(2f, 6f);
                 }
             }
 
@@ -170,6 +186,7 @@ public class Place_Asa : MonoBehaviour
     public void SkippingControlStop()
     {
         isSkipping = false;
+
     }
 
     public void DestroyAsa()

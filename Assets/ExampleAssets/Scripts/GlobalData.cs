@@ -5,18 +5,20 @@ using UnityEngine;
 public class GlobalData: MonoBehaviour
 {
     int plushAcquired = 0;
-    bool collectionActive = false;
+    int collectionActive = 0;
 
     public void Reset()
     {
-        PlayerPrefs.SetInt("plushAcquired", plushAcquired);
+        PlayerPrefs.SetInt("plushAcquired", 0);
+        PlayerPrefs.SetInt("collectionActive", 0);
         PlayerPrefs.Save();
     }
     public void PlushAcquired()
     {
         plushAcquired = 1;
-        collectionActive = true;
+        collectionActive = 1;
         PlayerPrefs.SetInt("plushAcquired", plushAcquired);
+        PlayerPrefs.SetInt("collectionActive", collectionActive);
         PlayerPrefs.Save();
     }
     public bool CheckPlush()
@@ -29,6 +31,10 @@ public class GlobalData: MonoBehaviour
     }
     public bool CollectionActive()
     {
-        return collectionActive;
+        if (PlayerPrefs.GetInt("collectionActive") == 1)
+        {
+            return true;
+        }
+        return false;
     }
 }

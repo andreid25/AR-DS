@@ -1163,7 +1163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a0318c15c716e458f84c3bee79d9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 8676221486107438306, guid: d4e64b4b0d87e75439545c6ad379e326, type: 3}
+  prefab: {fileID: 5189897936439007299, guid: 932713688cfdb164ab35afcaad37c890, type: 3}
   canvas: {fileID: 1536553148}
   dialogueController: {fileID: 1683438476}
 --- !u!114 &388525037
@@ -3540,7 +3540,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fd42d1dc07ef884aa5eec28def96e43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plushAcquired: 0
 --- !u!4 &1656533397
 Transform:
   m_ObjectHideFlags: 0
