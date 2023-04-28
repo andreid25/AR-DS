@@ -6,6 +6,7 @@ public class DialogueTrigger : MonoBehaviour
 {
     private string dialogueSet;
     private int setPart;
+    public float happiness; //0 is miserable and they will leave, 0-3 is bad and will leave unhappy, 4-7 is neutral and 9 or more is happy
 
     private List<string> dialogue = new List<string>();
     private List<string> anims = new List<string>();
@@ -15,6 +16,7 @@ public class DialogueTrigger : MonoBehaviour
     {
         dialogueSet = "StartDate";
         setPart = 1;
+        happiness = 5f; 
     }
     private void ChooseNextSetPart(int responseGiven)
     {
@@ -33,16 +35,19 @@ public class DialogueTrigger : MonoBehaviour
                         anims.Add("dissapointed");
                         dialogue.Add("...");
                         anims.Add("dissapointed");
+                        happiness--;
                         break;
                     case 2:
                         dialogue.Add("I'm glad to hear that!");
                         anims.Add("pleased");
+                        happiness += .5f;
                         break;
                     case 3:
                         dialogue.Add("Hehe, I'm very excited for this too!");
                         anims.Add("pleased");
                         dialogue.Add("Though I am also a bit nervous.");
                         anims.Add("pleased");
+                        happiness++;
                         break;
                 }
                 dialogue.Add("I have to say, you look really cute today... hehe.");
@@ -63,14 +68,17 @@ public class DialogueTrigger : MonoBehaviour
                     case 1:
                         dialogue.Add("Am I that boring? Well sorryyyyy");
                         anims.Add("dissapointed");
+                        happiness--;
                         break;
                     case 2:
                         dialogue.Add("Aww thanks!");
                         anims.Add("pleased");
+                        happiness++;
                         break;
                     case 3:
                         dialogue.Add("Hehe you jokester!");
                         anims.Add("pleased");
+                        happiness++;
                         break;
                 }
                 dialogue.Add("The person who designed me worked very hard to make sure I look cute.");

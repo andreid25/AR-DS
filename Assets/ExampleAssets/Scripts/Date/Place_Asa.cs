@@ -18,8 +18,8 @@ public class Place_Asa : MonoBehaviour
     private GameObject canvas;
     [SerializeField]
     private GameObject dialogueController;
-    private bool asaPlaced;
-    private bool isSkipping;
+    private bool asaPlaced, isSkipping;
+    private Vector3 endPos = new Vector3(0,0,0);
 
     private ARRaycastManager aRRaycastManager;
     private ARPlaneManager aRPlaneManager;
@@ -68,8 +68,8 @@ public class Place_Asa : MonoBehaviour
                 asaObj.AddComponent<ARAnchor>();
                 //objRotation.y = 180f;
                 yield return new WaitForSeconds(6.2f);
-                UnityEngine.Debug.Log(asaPlaced);
                 FindObjectOfType<DialogueTrigger>().StartDateDialogue1();
+                StartCoroutine(AsaPlace());
 
             }
             else
@@ -85,7 +85,14 @@ public class Place_Asa : MonoBehaviour
             UnityEngine.Debug.Log("In CoPlaceAsa() while loop");
         }
     }
-
+    private IEnumerator AsaPlace()
+    {
+        while (true)
+        {
+            FindObjectOfType<AR_Asa_UI>().PositionDebug(asaObj.transform.position);
+            yield return new WaitForSeconds(.2f);
+        }
+    }
     public void SkippingControl()
     {
         Destroy(GetComponent<ARAnchor>());
@@ -104,6 +111,8 @@ public class Place_Asa : MonoBehaviour
 
         Vector3 camPointCalc = new Vector3(Camera.main.transform.position.x, asaObj.transform.position.y, Camera.main.transform.position.z);
         float asaCamDistance = Vector3.Distance(camPointCalc, asaObj.transform.position);
+
+        FindObjectOfType<AsaAnimationManager>().Look(.2f, 70f);
         while (isSkipping)
         {
             Vector3 asaStartLocation = asaObj.transform.position;
@@ -161,20 +170,24 @@ public class Place_Asa : MonoBehaviour
                 {
                     UnityEngine.Debug.Log("Looking away");
                     isLooking = false;
-                    FindObjectOfType<AsaAnimationManager>().NoLook(.4f);
+                    FindObjectOfType<AsaAnimationManager>().Look(.4f, 0f);
                     timetoLook = UnityEngine.Random.Range(5f, 15f);
                 }
                 else
                 {
                     UnityEngine.Debug.Log("Looking at u");
                     isLooking = true;
-                    FindObjectOfType<AsaAnimationManager>().Look(.4f);
+                    FindObjectOfType<AsaAnimationManager>().Look(.4f, 70f);
                     timetoLook = UnityEngine.Random.Range(2f, 6f);
                 }
             }
 
+            endPos = asaObj.transform.position;
+
         }
         UnityEngine.Debug.Log("Outside Skipping loop");
+
+        //stop skipping rotate to you
         Vector3 asaPosition2 = asaObj.transform.position;
         asaPosition2.y = 0f;
         Vector3 cameraPosition2 = Camera.main.transform.position;
@@ -182,16 +195,28 @@ public class Place_Asa : MonoBehaviour
         Vector3 direction2 = cameraPosition2 - asaPosition2;
         Quaternion targetRotation2 = Quaternion.LookRotation(direction2);
         asaObj.transform.DORotate(targetRotation2.eulerAngles, 1f);
+
+        //position still override
+        StartCoroutine(ManualPosOverride(endPos));
     }
     public void SkippingControlStop()
     {
         isSkipping = false;
 
     }
+    private IEnumerator ManualPosOverride(Vector3 endPos)
+    {
+        while (asaPlaced)
+        {
+            asaObj.transform.position = endPos;
+            yield return null;
+        }
+    }
 
     public void DestroyAsa()
     {
         UnityEngine.Debug.Log("hi");
+        asaPlaced = false;
         Destroy(asaObj);
     }
     

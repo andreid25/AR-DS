@@ -14,9 +14,6 @@ public class AsaAnimationManager : MonoBehaviour
     private bool plushExists;
     void Awake()
     {
-        asaAnimator.SetBool("IsPleased", false);
-        asaAnimator.SetBool("IsGivingRun", false);
-        asaAnimator.SetBool("ItemTaken", false);
         plushExists = false;
         //headLooking = true;
     }
@@ -51,7 +48,7 @@ public class AsaAnimationManager : MonoBehaviour
             asaAnimator.SetBool("SnapToIdle", false); ;
         }
         asaAnimator.SetBool("IsPleased", true);
-        yield return new WaitForSeconds(.1f);
+        yield return new WaitForSeconds(.2f);
         asaAnimator.SetBool("IsPleased", false);
     }
 
@@ -71,7 +68,7 @@ public class AsaAnimationManager : MonoBehaviour
             asaAnimator.SetBool("SnapToIdle", false); ;
         }
         asaAnimator.SetBool("IsDissapointed", true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.2f);
         asaAnimator.SetBool("IsDissapointed", false);
     }
 
@@ -91,7 +88,7 @@ public class AsaAnimationManager : MonoBehaviour
             asaAnimator.SetBool("SnapToIdle", false); ;
         }
         asaAnimator.SetBool("IsNyaing", true);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.2f);
         StartCoroutine(CatEars());
         asaAnimator.SetBool("IsNyaing", false);
     }
@@ -107,10 +104,29 @@ public class AsaAnimationManager : MonoBehaviour
         }
         Destroy(realEars);
     }
+    public void TeeHee()
+    {
+        StartCoroutine(CoTeeHee());
+    }
+    private IEnumerator CoTeeHee()
+    {
+        if (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            asaAnimator.SetBool("SnapToIdle", true);
+            while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+            {
+                yield return null;
+            }
+            asaAnimator.SetBool("SnapToIdle", false); ;
+        }
+        asaAnimator.SetBool("IsTeeHeeing", true);
+        yield return new WaitForSeconds(.2f);
+        asaAnimator.SetBool("IsTeeHeeing", false);
+    }
 
     public void GiveYouRun()
     {
-        NoLook(2f);
+        Look(2f, 0f);
         StartCoroutine(CoGiveYouRun());
     }
     private IEnumerator CoGiveYouRun()
@@ -143,43 +159,24 @@ public class AsaAnimationManager : MonoBehaviour
         FindObjectOfType<Place_Asa>().DestroyAsa();
     }
 
-    public void NoLook(float time)
+    //Look controls
+    public void Look(float time, float intensity)
     {
-        /*if (headLooking)
-        {
-            headLooking = false;*/
-            StartCoroutine(CoNoLook(time));
-        //}
+        StartCoroutine(CoLook(time, intensity));
     }
-    private IEnumerator CoNoLook(float time)
+    private IEnumerator CoLook(float time, float intensity)
     {
+        float currentIntensity = head.weight;
         float elapsedTime = 0;
         while (elapsedTime < time)
         {
-            head.weight = (Mathf.Lerp(100, 0, (elapsedTime / time))/100);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-    }
-    public void Look(float time)
-    {
-        /*if (!headLooking)
-        {
-            headLooking = true;*/
-            StartCoroutine(CoLook(time));
-        //}
-    }
-    private IEnumerator CoLook(float time)
-    {
-        float elapsedTime = 0;
-        while (elapsedTime < time)
-        {
-            head.weight = (Mathf.Lerp(0, 100, (elapsedTime / time)) / 100);
+            head.weight = (Mathf.Lerp(currentIntensity, intensity, (elapsedTime / time)) / 100);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
     }
 
+    //skipping controls
     public void SkippingStart()
     {
         asaAnimator.SetBool("IsSkipping", true);

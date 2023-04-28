@@ -1,34 +1,12 @@
 fileFormatVersion: 2
-guid: 77651ac7470ff9e4a8ed0b003e38b112
+guid: fa1e9ad19d9796b40a15513be62d5a59
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable: []
-  externalObjects:
+  internalIDToNameTable:
   - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: datable_character_t_pose_merged_pasted__Hair
-    second: {fileID: 2100000, guid: 804289107017ad649bc4ba0512e9788a, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: datable_character_t_pose_merged_pasted__Upper body
-    second: {fileID: 2100000, guid: 92897240905240a42a955ffb881ba5fc, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: datable_character_t_pose_merged_pasted__eye
-    second: {fileID: 2100000, guid: a42f8a1259ab6614c8a337cc3f9a5481, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: datable_character_t_pose_merged_pasted__head
-    second: {fileID: 2100000, guid: a2b22e01308b1734fbb51f2f6ac2dd97, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: datable_character_t_pose_merged_pasted__lower body
-    second: {fileID: 2100000, guid: 576610c4bc680734f953247401f5b718, type: 2}
+      74: 1827226128182048838
+    second: Take 001
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -56,7 +34,36 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Take 001
+      takeName: Take 001
+      internalID: 0
+      firstFrame: 1380
+      lastFrame: 2120
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1380
     isReadable: 0
   meshes:
     lODScreenPercentages: []
@@ -113,7 +120,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.099999994
+    globalScale: 10
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

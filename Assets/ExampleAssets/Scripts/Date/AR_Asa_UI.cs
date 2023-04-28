@@ -12,6 +12,9 @@ public class AR_Asa_UI : MonoBehaviour
     [SerializeField] private Button startButtonEnabler, mainMenuButtonEnabler, endWalkButtonEnabler, letsGoButtonEnabler;
     [SerializeField] private GameObject aRScriptObject;
 
+    [SerializeField]
+    private TMP_Text positionText;
+
     void Awake()
     {
         blackBG.alpha = 0;
@@ -125,5 +128,10 @@ public class AR_Asa_UI : MonoBehaviour
         FindObjectOfType<AsaAnimationManager>().SkippingStop();
         endWalkButton.alpha = 0;
         endWalkButtonEnabler.interactable = false;
+    }
+
+    public void PositionDebug(Vector3 position)
+    {
+        positionText.text = position.ToString();
     }
 }
