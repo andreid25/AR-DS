@@ -206,7 +206,7 @@ public class Place_Asa : MonoBehaviour
     }
     private IEnumerator ManualPosOverride(Vector3 endPos)
     {
-        while (asaPlaced)
+        while (!isSkipping)
         {
             asaObj.transform.position = endPos;
             yield return null;

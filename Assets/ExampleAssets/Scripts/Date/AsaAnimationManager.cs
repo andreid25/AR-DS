@@ -17,6 +17,10 @@ public class AsaAnimationManager : MonoBehaviour
         plushExists = false;
         //headLooking = true;
     }
+    void Start()
+    {
+        Look(.3f, 1f);
+    }
 
     public void Idle()
     {
@@ -29,6 +33,7 @@ public class AsaAnimationManager : MonoBehaviour
         {
             yield return null;
         }
+        Look(.3f, 1f);
         asaAnimator.SetBool("PlayExit", false);
     }
 
@@ -45,10 +50,10 @@ public class AsaAnimationManager : MonoBehaviour
             {
                 yield return null;
             }
-            asaAnimator.SetBool("SnapToIdle", false); ;
+            asaAnimator.SetBool("SnapToIdle", false);
         }
         asaAnimator.SetBool("IsPleased", true);
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.1f);
         asaAnimator.SetBool("IsPleased", false);
     }
 
@@ -65,10 +70,10 @@ public class AsaAnimationManager : MonoBehaviour
             {
                 yield return null;
             }
-            asaAnimator.SetBool("SnapToIdle", false); ;
+            asaAnimator.SetBool("SnapToIdle", false);
         }
         asaAnimator.SetBool("IsDissapointed", true);
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.1f);
         asaAnimator.SetBool("IsDissapointed", false);
     }
 
@@ -85,10 +90,10 @@ public class AsaAnimationManager : MonoBehaviour
             {
                 yield return null;
             }
-            asaAnimator.SetBool("SnapToIdle", false); ;
+            asaAnimator.SetBool("SnapToIdle", false);
         }
         asaAnimator.SetBool("IsNyaing", true);
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.1f);
         StartCoroutine(CatEars());
         asaAnimator.SetBool("IsNyaing", false);
     }
@@ -117,11 +122,146 @@ public class AsaAnimationManager : MonoBehaviour
             {
                 yield return null;
             }
-            asaAnimator.SetBool("SnapToIdle", false); ;
+            asaAnimator.SetBool("SnapToIdle", false);
         }
         asaAnimator.SetBool("IsTeeHeeing", true);
-        yield return new WaitForSeconds(.2f);
+        yield return new WaitForSeconds(.1f);
         asaAnimator.SetBool("IsTeeHeeing", false);
+    }
+    public void Heartfelt()
+    {
+        StartCoroutine(CoHeartfelt());
+    }
+    private IEnumerator CoHeartfelt()
+    {
+        if (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            asaAnimator.SetBool("SnapToIdle", true);
+            while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+            {
+                yield return null;
+            }
+            asaAnimator.SetBool("SnapToIdle", false);
+        }
+        asaAnimator.SetBool("IsHeartfelt", true);
+        yield return new WaitForSeconds(.1f);
+        asaAnimator.SetBool("IsHeartfelt", false);
+    }
+    public void Dejected()
+    {
+        StartCoroutine(CoDejected());
+    }
+    private IEnumerator CoDejected()
+    {
+        if (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            asaAnimator.SetBool("SnapToIdle", true);
+            while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+            {
+                yield return null;
+            }
+            asaAnimator.SetBool("SnapToIdle", false);
+        }
+        Look(.3f, 0f);
+        asaAnimator.SetBool("IsDejected", true);
+        yield return new WaitForSeconds(.1f);
+        asaAnimator.SetBool("IsDejected", false);
+    }
+    public void LeanForward()
+    {
+        StartCoroutine(CoLeanForward());
+    }
+    private IEnumerator CoLeanForward()
+    {
+        if (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            asaAnimator.SetBool("SnapToIdle", true);
+            while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+            {
+                yield return null;
+            }
+            asaAnimator.SetBool("SnapToIdle", false);
+        }
+        asaAnimator.SetBool("IsLeaningForward", true);
+        yield return new WaitForSeconds(.1f);
+        asaAnimator.SetBool("IsLeaningForward", false);
+    }
+    public void Think()
+    {
+        StartCoroutine(CoThink());
+    }
+    private IEnumerator CoThink()
+    {
+        if (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            asaAnimator.SetBool("SnapToIdle", true);
+            while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+            {
+                yield return null;
+            }
+            asaAnimator.SetBool("SnapToIdle", false);
+        }
+        asaAnimator.SetBool("IsThinking", true);
+        yield return new WaitForSeconds(.1f);
+        asaAnimator.SetBool("IsThinking", false);
+    }
+    public void Angry()
+    {
+        StartCoroutine(CoAngry());
+    }
+    private IEnumerator CoAngry()
+    {
+        if (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            asaAnimator.SetBool("SnapToIdle", true);
+            while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+            {
+                yield return null;
+            }
+            asaAnimator.SetBool("SnapToIdle", false);
+        }
+        asaAnimator.SetBool("IsAngry", true);
+        yield return new WaitForSeconds(.1f);
+        asaAnimator.SetBool("IsAngry", false);
+    }
+
+    public void NeutralExit()
+    {
+        Look(2f, 1f);
+        StartCoroutine(CoNeutralExit());
+    }
+    private IEnumerator CoNeutralExit()
+    {
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            yield return null;
+        }
+        asaAnimator.SetBool("NeutralExit", true);
+    }
+    public void NeutralExitTwo()
+    {
+        Look(1f, 0f);
+        asaAnimator.SetBool("PlayExit", true);
+        StartCoroutine(DestroyCheck());
+    }
+
+    public void SadExit()
+    {
+        Look(.5f, 0f);
+        StartCoroutine(CoSadExit());
+    }
+    private IEnumerator CoSadExit()
+    {
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            yield return null;
+        }
+        asaAnimator.SetBool("SadExit", true);
+    }
+    public void SadExitTwo()
+    {
+        asaAnimator.SetBool("PlayExit", true);
+        StartCoroutine(DestroyCheck());
     }
 
     public void GiveYouRun()
@@ -178,15 +318,44 @@ public class AsaAnimationManager : MonoBehaviour
 
     //skipping controls
     public void SkippingStart()
+        //add easing here
     {
+        StartCoroutine(ExitAnim());
+        StartCoroutine(CoSkippingStart());
+        //FindObjectOfType<AR_Asa_UI>().Skipping();
+    }
+    private IEnumerator CoSkippingStart()
+    {
+        yield return new WaitForSeconds(1f);
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            yield return null;
+        }
         asaAnimator.SetBool("IsSkipping", true);
         FindObjectOfType<Place_Asa>().SkippingControl();
-        FindObjectOfType<AR_Asa_UI>().Skipping();
     }
     public void SkippingStop()
     {
+        StartCoroutine(ExitAnim());
+        StartCoroutine(CoSkippingStop());
+    }
+    private IEnumerator CoSkippingStop()
+    {
+        yield return new WaitForSeconds(1f);
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            yield return null;
+        }
         asaAnimator.SetBool("IsSkipping", false);
         FindObjectOfType<Place_Asa>().SkippingControlStop();
-        FindObjectOfType<DialogueTrigger>().SkipEnd();
+    }
+    private IEnumerator ExitAnim()
+    {
+        asaAnimator.SetBool("PlayExit", true);
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
+        {
+            yield return null;
+        }
+        asaAnimator.SetBool("PlayExit", false);
     }
 }

@@ -90,6 +90,24 @@ public class Date_Dialogue_Manager : MonoBehaviour
             case "nya":
                 FindObjectOfType<AsaAnimationManager>().Nya();
                 break;
+            case "teehee":
+                FindObjectOfType<AsaAnimationManager>().TeeHee();
+                break;
+            case "heartfelt":
+                FindObjectOfType<AsaAnimationManager>().Heartfelt();
+                break;
+            case "dejected":
+                FindObjectOfType<AsaAnimationManager>().Dejected();
+                break;
+            case "lean forward":
+                FindObjectOfType<AsaAnimationManager>().LeanForward();
+                break;
+            case "think":
+                FindObjectOfType<AsaAnimationManager>().Think();
+                break;
+            case "angry":
+                FindObjectOfType<AsaAnimationManager>().Angry();
+                break;
             default:
                 // code block
                 break;
@@ -108,6 +126,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
             }
             else
             {
+                responseGiven = 0;
                 EndDialogue();
             }
             return;
@@ -122,10 +141,15 @@ public class Date_Dialogue_Manager : MonoBehaviour
     {
         UnityEngine.Debug.Log("In TypeSentence()");
         dialogueText.text = "";
+        int charsDisplayed = 0;
         foreach(char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
-            yield return null;
+            charsDisplayed++;
+            if (charsDisplayed % 3 == 0)
+            {
+                yield return null;
+            }
         }
     }
 

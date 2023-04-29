@@ -117,17 +117,24 @@ public class AR_Asa_UI : MonoBehaviour
         letsGoButton.DOFade(0, 1.0f);
         letsGoButtonEnabler.interactable = false;
         FindObjectOfType<AsaAnimationManager>().SkippingStart();
+        FindObjectOfType<DialogueTrigger>().StartSkip();
     }
     public void Skipping()
     {
         endWalkButton.alpha = 1;
         endWalkButtonEnabler.interactable = true;
     }
+    public void SkippingConversationStart()
+    {
+        endWalkButton.alpha = 0;
+        endWalkButtonEnabler.interactable = false;
+    }
     public void EndSkipping()
     {
         FindObjectOfType<AsaAnimationManager>().SkippingStop();
         endWalkButton.alpha = 0;
         endWalkButtonEnabler.interactable = false;
+        FindObjectOfType<DialogueTrigger>().SkipEnd();
     }
 
     public void PositionDebug(Vector3 position)

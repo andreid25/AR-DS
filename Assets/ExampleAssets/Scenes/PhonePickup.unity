@@ -509,10 +509,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: let's Start!
+  m_text: 'LET''S
+
+    START!'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5459ebd356d3e284ca3781599c4cea30, type: 2}
-  m_sharedMaterial: {fileID: 3350697074651964864, guid: 5459ebd356d3e284ca3781599c4cea30,
+  m_fontAsset: {fileID: 11400000, guid: 59246f1f51f57b3439b00f141e5f83f2, type: 2}
+  m_sharedMaterial: {fileID: -355120567374772924, guid: 59246f1f51f57b3439b00f141e5f83f2,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -537,7 +539,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 60.55
+  m_fontSize: 51.4
   m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -761,14 +763,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Point Camera to a Table or a Flat Surface
+  m_text: 'Point camera to a table or a flat surface
 
 
-    once phone appears tap
+    Once phone appears tap
     it on your device''s screen'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5459ebd356d3e284ca3781599c4cea30, type: 2}
-  m_sharedMaterial: {fileID: 3350697074651964864, guid: 5459ebd356d3e284ca3781599c4cea30,
+  m_fontAsset: {fileID: 11400000, guid: 3260d3bf9e2aec84b976e0b6ae45954d, type: 2}
+  m_sharedMaterial: {fileID: -1871801247280875163, guid: 3260d3bf9e2aec84b976e0b6ae45954d,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -793,7 +795,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.55
+  m_fontSize: 41.75
   m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -929,12 +931,12 @@ MonoBehaviour:
   m_text: 'No surface detected
 
 
-    pan camera around more
+    Pan camera around more
 
     to detect surfaces'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5459ebd356d3e284ca3781599c4cea30, type: 2}
-  m_sharedMaterial: {fileID: 3350697074651964864, guid: 5459ebd356d3e284ca3781599c4cea30,
+  m_fontAsset: {fileID: 11400000, guid: 3260d3bf9e2aec84b976e0b6ae45954d, type: 2}
+  m_sharedMaterial: {fileID: -1871801247280875163, guid: 3260d3bf9e2aec84b976e0b6ae45954d,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -959,7 +961,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.4
+  m_fontSize: 41.1
   m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 1
