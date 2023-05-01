@@ -12,6 +12,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
     [SerializeField] private Image dialogueBox, optionsBox1, optionsBox2, optionsBox3;
 
     [SerializeField] private Animator dialogueAnimator, options1Animator, options2Animator, options3Animator;
+    [SerializeField] private AudioSource click, talk;
 
     private Queue<string> sentences = new Queue<string>();
     private bool dialogueActive;
@@ -108,6 +109,18 @@ public class Date_Dialogue_Manager : MonoBehaviour
             case "angry":
                 FindObjectOfType<AsaAnimationManager>().Angry();
                 break;
+            case "blush":
+                FindObjectOfType<AsaAnimationManager>().Blush();
+                break;
+            case "pointpoint":
+                FindObjectOfType<AsaAnimationManager>().PointPoint();
+                break;
+            case "embarrassed":
+                FindObjectOfType<AsaAnimationManager>().Embarrassed();
+                break;
+            case "shocked":
+                FindObjectOfType<AsaAnimationManager>().Shocked();
+                break;
             default:
                 // code block
                 break;
@@ -146,8 +159,9 @@ public class Date_Dialogue_Manager : MonoBehaviour
         {
             dialogueText.text += letter;
             charsDisplayed++;
-            if (charsDisplayed % 3 == 0)
+            if (charsDisplayed % 2 == 0)
             {
+                //talk.Play();
                 yield return null;
             }
         }
@@ -247,6 +261,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
     {
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began) && dialogueBox.enabled)
         {
+            click.Play();
             DisplayNextSentence();
             AnimationQueue();
         }

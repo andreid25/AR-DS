@@ -13,8 +13,8 @@ public class DialogueTrigger : MonoBehaviour
     private List<string> anims = new List<string>();
     private List<string> options = new List<string>();
 
-    private List<string> topics = new List<string>();
-    private bool capstoneDiscussed = false;
+    //private List<string> topics = new List<string>();
+    private int topicsDiscussed = 0;
 
     private void Awake()
     {
@@ -24,11 +24,11 @@ public class DialogueTrigger : MonoBehaviour
         happiness = 5f;
 
         //initailize skip dialogue topics
-        topics.Add("TypesOfArt");
+        /*topics.Add("TypesOfArt");
         topics.Add("Nya");
         topics.Add("DrawingInspiration");
         topics.Add("TimeOfDay");
-        topics.Add("Exams");
+        topics.Add("Exams");*/
     }
     private void ChooseNextSetPart(int responseGiven)
     {
@@ -46,6 +46,8 @@ public class DialogueTrigger : MonoBehaviour
                         dialogue.Add("Eh? What's with that attitude?");
                         anims.Add("dissapointed");
                         dialogue.Add("...");
+                        anims.Add("dissapointed");
+                        dialogue.Add("Let's just pretend you didn't say that.");
                         anims.Add("dissapointed");
                         happiness--;
                         break;
@@ -129,7 +131,6 @@ public class DialogueTrigger : MonoBehaviour
                     }
                     break;
                 case "Capstone":
-                    //TODO: finish this dialogue piece
                     if (setPart == 1)
                     {
                         FindObjectOfType<AsaAnimationManager>().SkippingStop();
@@ -138,7 +139,7 @@ public class DialogueTrigger : MonoBehaviour
 
                         dialogue.Add("I see you're at the capstone fair right now.");
                         anims.Add("idle");
-                        dialogue.Add("Thanks for checking out the project for this long!");
+                        dialogue.Add("Thanks for checking out the project!");
                         anims.Add("heartfelt");
                         dialogue.Add("The person who made this worked really hard on this project!");
                         anims.Add("heartfelt");
@@ -171,10 +172,215 @@ public class DialogueTrigger : MonoBehaviour
                                 break;
                             case 3:
                                 dialogue.Add("Yeah! It really is awesome!");
-                                anims.Add("teehee"); //blush
+                                anims.Add("blush"); //something here is wrong
                                 dialogue.Add("You should make sure to congratulate the creator when you get the chance.");
-                                anims.Add("idle"); //blush
+                                anims.Add("blush");
                                 happiness++;
+                                break;
+                        }
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    break;
+                case "Nya":
+                    if (setPart == 1)
+                    {
+                        FindObjectOfType<AsaAnimationManager>().SkippingStop();
+                        setPart = 2;
+                        UnityEngine.Debug.Log("In Nya Dialogue");
+
+                        dialogue.Add("You know, sometimes I like to think I’m a cat…");
+                        anims.Add("think");
+
+                        options.Add("How come?");
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    else if (setPart == 2)
+                    {
+                        setPart = 3;
+
+                        dialogue.Add("Well I sleep a lot, get cranky, and sometimes I like to meow.");
+                        anims.Add("pointpoint");
+
+                        options.Add("That's pathetic.");
+                        options.Add("I get it. Sleeping is super nice!");
+                        if (happiness >= 7)
+                        {
+                            options.Add("Meow? Show me.");
+                        }
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    else if (setPart == 3)
+                    {
+                        switch (responseGiven)
+                        {
+                            case 1:
+                                setPart = 1;
+                                dialogueBranch = "Return";
+                                dialogue.Add("Hey... it's only somewhat pathetic...");
+                                anims.Add("dissapointed");
+                                dialogue.Add("It's just who I am though!");
+                                anims.Add("idle");
+                                happiness--;
+                                break;
+                            case 2:
+                                setPart = 4;
+                                dialogue.Add("Yeah! I sleep around 10 hours a day and I still end up tired!");
+                                anims.Add("pointpoint");
+                                options.Add("Not sure whether I should be impressed or concerned.");
+                                happiness++;
+                                break;
+                            case 3:
+                                setPart = 5;
+                                dialogue.Add("Oh?");
+                                anims.Add("pointpoint");
+                                dialogue.Add("You really want to see me meow?");
+                                anims.Add("teehee");
+                                dialogue.Add("I can show you since you've been so nice to me!");
+                                anims.Add("teehee");
+                                options.Add("Actually nevermind."); //Test this option
+                                options.Add("Why not?");
+                                break;
+                        }
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    else if (setPart == 4)
+                    {
+                        setPart = 1;
+                        dialogueBranch = "Return";
+
+                        dialogue.Add("Probably concerned.");
+                        anims.Add("teehee");
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    else if (setPart == 5)
+                    {
+                        switch (responseGiven)
+                        {
+                            case 1:
+                                setPart = 1;
+                                dialogueBranch = "Return"; //idk if this will work
+                                break;
+                            case 2:
+                                setPart = 6;
+                                dialogue.Add("Nyaaa~");
+                                anims.Add("nya");
+                                dialogue.Add("...");
+                                anims.Add("nya");
+                                dialogue.Add("...");
+                                anims.Add("nya");
+                                dialogue.Add("...");
+                                anims.Add("nya");
+                                dialogue.Add("You’re so weird for wanting this!!");
+                                anims.Add("embarrassed");
+                                dialogue.Add("I can't believe you made me do that!");
+                                anims.Add("embarrassed");
+
+                                options.Add("You're the one who said you can meow!");
+                                options.Add("Tee-hee");
+                                FindObjectOfType<GlobalData>().CatEarsAcquired();
+                                happiness++;
+                                break;
+                        }
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    else if (setPart == 6)
+                    {
+                        setPart = 1;
+                        dialogueBranch = "Return";
+                        switch (responseGiven)
+                        {
+                            case 1:
+                                dialogue.Add("I know... but you still egged me on!");
+                                anims.Add("embarrassed");
+                                break;
+                            case 2:
+                                dialogue.Add("I can’t believe you made me do something so embarrassing...");
+                                anims.Add("embarrassed");
+                                break;
+                        }
+                        dialogue.Add("I have to admit though... that was fun.");
+                        anims.Add("embarrassed");
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    break;
+                case "Last Topic":
+                    if (setPart == 1)
+                    {
+                        FindObjectOfType<AsaAnimationManager>().SkippingStop();
+                        dialogueBranch = "Return";
+                        UnityEngine.Debug.Log("In Last Topic");
+
+                        dialogue.Add("Wow you've been playing this for quite a while.");
+                        anims.Add("shocked");
+                        dialogue.Add("To be honest, I didn't expect anyone to get this far through the walking dialogues!");
+                        anims.Add("shocked");
+                        dialogue.Add("There aren't any walking dialogues left after this.");
+                        anims.Add("idle");
+                        dialogue.Add("Of course there's still the ending of the date to check out!");
+                        anims.Add("idle");
+                        dialogue.Add("So as flattered as I am that you want to walk with me this much, definitely consider wrapping up soon.");
+                        anims.Add("blush");
+                        dialogue.Add("We want to give everyone else a chance to try the experience!");
+                        anims.Add("idle");
+                        dialogue.Add("Plus you should check out everyone else's projects too! They all worked really hard!");
+                        anims.Add("heartfelt");
+                        dialogue.Add("So I recommend hitting that \"Stop Walking\" button soon!");
+                        anims.Add("idle");
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    break;
+                case "Art":
+                    if (setPart == 1)
+                    {
+                        FindObjectOfType<AsaAnimationManager>().SkippingStop();
+                        UnityEngine.Debug.Log("In Last Topic");
+                        setPart = 2;
+
+                        dialogue.Add("All this walking and sightseeing is making me think about stuff I should be drawing.");
+                        anims.Add("idle");
+                        dialogue.Add("I'm actually quite the art nerd hehe.");
+                        anims.Add("lean forward");
+                        dialogue.Add("I'm curious, do you prefer classical or modern art?");
+                        anims.Add("lean forward");
+                        options.Add("Art is a massive waste of time.");
+                        options.Add("Modern art.");
+                        options.Add("Classical art.");
+                        FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    }
+                    if (setPart == 2)
+                    {
+                        dialogueBranch = "Return";
+                        setPart = 1;
+                        
+                        switch (responseGiven)
+                        {
+                            case 1:
+                                dialogue.Add("Waste of time?!");
+                                anims.Add("angry");
+                                dialogue.Add("Well even if you think that, that doesn't change that I think it's cool!");
+                                anims.Add("angry");
+                                happiness--;
+                                break;
+                            case 2:
+                                dialogue.Add("Ah modern art...");
+                                anims.Add("think");
+                                dialogue.Add("Actually, me too!");
+                                anims.Add("pleased");
+                                dialogue.Add("Although a lot of it is really gimmicky and lame, some of it is actually super creative!");
+                                anims.Add("pleased");
+                                dialogue.Add("Seeing artists step into new territory is always super cool.");
+                                anims.Add("pleased");
+                                happiness++;
+                                break;
+                            case 3:
+                                dialogue.Add("Classical huh...");
+                                anims.Add("think");
+                                dialogue.Add("Yeah I get it. Painters from the past were insanely skilled!");
+                                anims.Add("idle");
+                                dialogue.Add("It still impresses me how realistic and detailed some old paintings are.");
+                                anims.Add("idle");
+                                dialogue.Add("But don't brush modern art off either! A lot of it is actually really creative.");
+                                anims.Add("idle");
                                 break;
                         }
                         FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
@@ -187,11 +393,9 @@ public class DialogueTrigger : MonoBehaviour
                     break;
             }
 
-            //TODO: add rest of dialogue branches
         }
         else if (dialogueSet == "EndDate")
         {
-            //TODO: add new happy branch
             if (dialogueBranch == "Neutral")
             {
                 if (setPart == 1)
@@ -216,7 +420,7 @@ public class DialogueTrigger : MonoBehaviour
                 }
                 else if (setPart == 3)
                 {
-                    FindObjectOfType<AR_Asa_UI>().DateEnd(1);
+                    FindObjectOfType<AR_Asa_UI>().DateEnd();
                 }
             }
             else if (dialogueBranch == "Sad")
@@ -257,10 +461,53 @@ public class DialogueTrigger : MonoBehaviour
                 }
                 else if (setPart == 4)
                 {
-                    FindObjectOfType<AR_Asa_UI>().DateEnd(1);
+                    FindObjectOfType<AR_Asa_UI>().DateEnd();
                 }
             }
-            else
+            else if (dialogueBranch == "Happy")
+            {
+                if (setPart == 1)
+                {
+                    setPart = 2;
+                    dialogue.Add("Uuuuu... YAY THAT WAS SO MUCH FUN!");
+                    dialogue.Add("I had such a great time! You were so much fun to talk to!");
+                    dialogue.Add("You've made this such a great date!!");
+                    anims.Add("ignore");
+                    options.Add("You were great to talk to.");
+                    options.Add("It was very fun!");
+                    FindObjectOfType<AsaAnimationManager>().HappyExit();
+                    FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                }
+                else if (setPart == 2)
+                {
+                    setPart = 3;
+                    dialogue.Add("Ooh I have something for you!");
+                    dialogue.Add("It's really embarassing... I knit it myself... Take it...");
+                    anims.Add("ignore");
+                    options.Add("This is adorable! Thanks Asa! (Take the item)");
+                    options.Add("Sure I'll take it. (Take the item)");
+                    FindObjectOfType<AsaAnimationManager>().HappyExitTwo();
+                    FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                    FindObjectOfType<GlobalData>().PlushAcquired();
+                }
+                else if (setPart == 3)
+                {
+                    setPart = 4;
+                    dialogue.Add("Omg I'm so happy it's embarassing...");
+                    dialogue.Add("Tee-hee...");
+                    dialogue.Add("Hee-hee......");
+                    dialogue.Add("okgottarunbyeeeeeeeeeee............");
+                    anims.Add("ignore");
+                    options.Add("Huh?");
+                    FindObjectOfType<AsaAnimationManager>().HappyExitThree();
+                    FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
+                }
+                else if (setPart == 4)
+                {
+                    FindObjectOfType<AR_Asa_UI>().DateEnd();
+                }
+            }
+            else 
             {
                 if (setPart == 1)
                 {
@@ -279,7 +526,7 @@ public class DialogueTrigger : MonoBehaviour
                 else if (setPart == 3)
                 {
                     FindObjectOfType<GlobalData>().PlushAcquired();
-                    FindObjectOfType<AR_Asa_UI>().DateEnd(1);
+                    FindObjectOfType<AR_Asa_UI>().DateEnd();
                 }
             }
         }
@@ -287,29 +534,41 @@ public class DialogueTrigger : MonoBehaviour
     private IEnumerator RandomSkippingDialogue()
     {
         FindObjectOfType<AR_Asa_UI>().Skipping();
-        yield return new WaitForSeconds(UnityEngine.Random.Range(12.0f, 20.0f));
-        //TODO: add at least 10 branches
-        if (!capstoneDiscussed)
+        yield return new WaitForSeconds(UnityEngine.Random.Range(12.0f, 16.0f));
+        switch (topicsDiscussed)
         {
-            dialogueBranch = "Capstone";
-            setPart = 1;
-            capstoneDiscussed = true;
-
-            ChooseNextSetPart(0);
-            FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
-        }
-        else
-        {
-            if (topics.Count > 0)
-            {
-                int randomChooser = UnityEngine.Random.Range(0, topics.Count);
-                dialogueBranch = topics[randomChooser];
-                topics.RemoveAt(randomChooser);
+            case 0:
+                dialogueBranch = "Capstone";
                 setPart = 1;
+                topicsDiscussed = 1;
 
                 ChooseNextSetPart(0);
                 FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
-            }
+                break;
+            case 1:
+                dialogueBranch = "Nya";
+                setPart = 1;
+                topicsDiscussed = 2;
+
+                ChooseNextSetPart(0);
+                FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
+                break;
+            case 2:
+                dialogueBranch = "Art";
+                setPart = 1;
+                topicsDiscussed = 3;
+
+                ChooseNextSetPart(0);
+                FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
+                break;
+            case 3:
+                dialogueBranch = "Last Topic";
+                setPart = 1;
+                topicsDiscussed = 4;
+
+                ChooseNextSetPart(0);
+                FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
+                break;
         }
     }
     private IEnumerator GiveYouItem()
