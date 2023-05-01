@@ -450,21 +450,28 @@ public class AsaAnimationManager : MonoBehaviour
     }
 
     //skipping controls
-    public void SkippingStart()
+    public void SkippingStart(bool sad)
         //add easing here
     {
         StartCoroutine(ExitAnim());
-        StartCoroutine(CoSkippingStart());
+        StartCoroutine(CoSkippingStart(sad));
         //FindObjectOfType<AR_Asa_UI>().Skipping();
     }
-    private IEnumerator CoSkippingStart()
+    private IEnumerator CoSkippingStart(bool sad)
     {
         yield return new WaitForSeconds(1f);
         while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Idle")))
         {
             yield return null;
         }
-        asaAnimator.SetBool("IsSkipping", true);
+        /*if (sad)
+        {
+            asaAnimator.SetBool("IsWalking", true);
+        }
+        else
+        {*/
+            asaAnimator.SetBool("IsSkipping", true);
+        //}
         FindObjectOfType<Place_Asa>().SkippingControl();
     }
     public void SkippingStop()
@@ -476,6 +483,7 @@ public class AsaAnimationManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         asaAnimator.SetBool("IsSkipping", false);
+        //asaAnimator.SetBool("IsWalking", false);
         FindObjectOfType<Place_Asa>().SkippingControlStop();
     }
     private IEnumerator ExitAnim()

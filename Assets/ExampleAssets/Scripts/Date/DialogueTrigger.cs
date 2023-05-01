@@ -8,6 +8,7 @@ public class DialogueTrigger : MonoBehaviour
     private string dialogueSet, dialogueBranch;
     private int setPart;
     public float happiness; //0 is miserable and they will leave, 0-3 is bad and will leave unhappy, 4-7 is neutral and 9 or more is happy
+    private bool sad = false;
 
     private List<string> dialogue = new List<string>();
     private List<string> anims = new List<string>();
@@ -86,6 +87,7 @@ public class DialogueTrigger : MonoBehaviour
                         dialogue.Add("Sorry for being boring.");
                         anims.Add("dejected");
                         happiness--;
+                        sad = true;
                         break;
                     case 2:
                         dialogue.Add("Aww thanks!");
@@ -133,6 +135,7 @@ public class DialogueTrigger : MonoBehaviour
                 case "Capstone":
                     if (setPart == 1)
                     {
+                        sad = false;
                         FindObjectOfType<AsaAnimationManager>().SkippingStop();
                         setPart = 2;
                         UnityEngine.Debug.Log("In Capstone Dialogue");
@@ -163,7 +166,8 @@ public class DialogueTrigger : MonoBehaviour
                                 dialogue.Add("I hope you were joking...");
                                 anims.Add("angry"); 
                                 dialogue.Add("Even so that was a bad one!");
-                                anims.Add("angry"); 
+                                anims.Add("angry");
+                                sad = true;
                                 happiness--;
                                 break;
                             case 2:
@@ -184,6 +188,7 @@ public class DialogueTrigger : MonoBehaviour
                 case "Nya":
                     if (setPart == 1)
                     {
+                        sad = false;
                         FindObjectOfType<AsaAnimationManager>().SkippingStop();
                         setPart = 2;
                         UnityEngine.Debug.Log("In Nya Dialogue");
@@ -220,6 +225,7 @@ public class DialogueTrigger : MonoBehaviour
                                 anims.Add("dissapointed");
                                 dialogue.Add("It's just who I am though!");
                                 anims.Add("idle");
+                                sad = true;
                                 happiness--;
                                 break;
                             case 2:
@@ -306,6 +312,7 @@ public class DialogueTrigger : MonoBehaviour
                 case "Last Topic":
                     if (setPart == 1)
                     {
+                        sad = false;
                         FindObjectOfType<AsaAnimationManager>().SkippingStop();
                         dialogueBranch = "Return";
                         UnityEngine.Debug.Log("In Last Topic");
@@ -332,6 +339,7 @@ public class DialogueTrigger : MonoBehaviour
                 case "Art":
                     if (setPart == 1)
                     {
+                        sad = false;
                         FindObjectOfType<AsaAnimationManager>().SkippingStop();
                         UnityEngine.Debug.Log("In Last Topic");
                         setPart = 2;
@@ -359,6 +367,7 @@ public class DialogueTrigger : MonoBehaviour
                                 anims.Add("angry");
                                 dialogue.Add("Well even if you think that, that doesn't change that I think it's cool!");
                                 anims.Add("angry");
+                                sad = true;
                                 happiness--;
                                 break;
                             case 2:
@@ -389,7 +398,7 @@ public class DialogueTrigger : MonoBehaviour
                 case "Return":
                     setPart = 1;
                     StartCoroutine(RandomSkippingDialogue());
-                    FindObjectOfType<AsaAnimationManager>().SkippingStart();
+                    FindObjectOfType<AsaAnimationManager>().SkippingStart(sad);
                     break;
             }
 
@@ -610,6 +619,7 @@ public class DialogueTrigger : MonoBehaviour
 
     public void StartSkip()
     {
+        FindObjectOfType<AsaAnimationManager>().SkippingStart(sad);
         setPart = 2;
         ChooseNextSetPart(0);
     }

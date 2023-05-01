@@ -146,7 +146,6 @@ public class AR_Asa_UI : MonoBehaviour
         walkingInstructions.DOFade(0, 1.0f);
         letsGoButton.DOFade(0, 1.0f);
         letsGoButtonEnabler.interactable = false;
-        FindObjectOfType<AsaAnimationManager>().SkippingStart();
         FindObjectOfType<DialogueTrigger>().StartSkip();
     }
     public void Skipping()
