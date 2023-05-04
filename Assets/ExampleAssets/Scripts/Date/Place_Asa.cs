@@ -69,7 +69,7 @@ public class Place_Asa : MonoBehaviour
                 //objRotation.y = 180f;
                 yield return new WaitForSeconds(6.2f);
                 FindObjectOfType<DialogueTrigger>().StartDateDialogue1();
-                StartCoroutine(AsaPlace());
+                //StartCoroutine(AsaPlace());
 
             }
             else
@@ -82,17 +82,69 @@ public class Place_Asa : MonoBehaviour
                     yield return new WaitForSeconds(2.8f);
                 }
             }
-            UnityEngine.Debug.Log("In CoPlaceAsa() while loop");
+            //StartCoroutine(TurnToYou());
         }
     }
-    private IEnumerator AsaPlace()
+    /*private IEnumerator AsaPlace()
     {
         while (true)
         {
             FindObjectOfType<AR_Asa_UI>().PositionDebug(asaObj.transform.position);
             yield return new WaitForSeconds(.2f);
         }
-    }
+    }*/
+    /*private IEnumerator TurnToYou() //TODO: Fuck this fix it if you ever hate yourself enough
+    {
+        float camRotation;
+        float asaRotation;
+        while (!isSkipping)
+        {
+            asaRotation = asaObj.transform.rotation.y;
+            camRotation = Camera.main.transform.rotation.y;
+
+            UnityEngine.Debug.Log(camRotation);
+            if (camRotation > 0)
+            {
+                camRotation -= 1; //check if this is right
+            }
+            else
+            {
+                camRotation += 1f;
+            }
+            float rotationDifference = camRotation - asaRotation;
+            if (rotationDifference > .20f)
+            {
+                float timePassed = 0f;
+                while (timePassed < 1f)
+                {
+                    asaObj.transform.RotateAround(asaObj.transform.position, asaObj.transform.up, Time.deltaTime * -15f);
+                    yield return null;
+                    timePassed += Time.deltaTime;
+                }
+            }
+            else if (rotationDifference < .20f)
+            {
+                float timePassed = 0f;
+                while (timePassed < 1f)
+                {
+                    asaObj.transform.RotateAround(asaObj.transform.position, asaObj.transform.up, Time.deltaTime * 15f);
+                    yield return null;
+                    timePassed += Time.deltaTime;
+                }
+            }
+            /*asaDirection = asaObj.transform.rotation.EulerAngles * Vector3.forward;
+            var forwardB = Camera.main.transform.rotation.EulerAngles * Vector3.forward;
+
+            var angleA = Mathf.Atan2(asaDirection.x, asaDirection.z);
+            var angleB = Mathf.Atan2(forwardB.x, forwardB.z);
+
+            float angleDiff = Mathf.DeltaAngle(angleA, angleB);
+
+            UnityEngine.Debug.Log("This is hard");
+
+            yield return null;
+        }
+    }*/
     public void SkippingControl()
     {
         Destroy(GetComponent<ARAnchor>());
@@ -110,10 +162,12 @@ public class Place_Asa : MonoBehaviour
         bool isLooking = true;
 
         Vector3 camPointCalc = new Vector3(Camera.main.transform.position.x, asaObj.transform.position.y, Camera.main.transform.position.z);
-        float asaCamDistance = Vector3.Distance(camPointCalc, asaObj.transform.position);
+        float asaStartDistance = Vector3.Distance(camPointCalc, asaObj.transform.position);
+        float sevenSecondTime = 0f;
+        float asaDistance;
 
         FindObjectOfType<AsaAnimationManager>().Look(.2f, 70f);
-        while (isSkipping)
+        while (isSkipping) //TODO: test lerp to ideal distance
         {
             Vector3 asaStartLocation = asaObj.transform.position;
 
@@ -121,8 +175,19 @@ public class Place_Asa : MonoBehaviour
 
             Vector3 newCamPos = Camera.main.transform.position;
 
+            sevenSecondTime += (timeBetweenMove / 7);
+            if (sevenSecondTime < 1f)
+            {
+                asaDistance = Mathf.Lerp(asaStartDistance, 1.2f, sevenSecondTime);
+            }
+            else
+            {
+                asaDistance = 1.2f;
+            }
+
+
             //calvulate where asa should move to
-            Vector3 moveTo = newCamPos + Camera.main.transform.forward * asaCamDistance;
+            Vector3 moveTo = newCamPos + Camera.main.transform.forward * asaDistance;
             moveTo.y = asaObj.transform.position.y;
 
             //change Asa's y pos if new plane detected
@@ -142,7 +207,7 @@ public class Place_Asa : MonoBehaviour
             //move asa
             asaObj.transform.DOMove(moveTo, timeBetweenMove);
 
-            if (Vector3.Distance(asaStartLocation, moveTo) > .3f) //TODO Change this so it calcs how much asa moves
+            if (Vector3.Distance(asaStartLocation, moveTo) > .3f)
             {
                 asaObj.transform.DORotate(asaLookAngle.eulerAngles, timeBetweenMove);
                 stillCount = 0;
@@ -198,6 +263,9 @@ public class Place_Asa : MonoBehaviour
 
         //position still override
         StartCoroutine(ManualPosOverride(endPos));
+        yield return new WaitForSeconds(1f);
+        asaObj.AddComponent<ARAnchor>();
+        StartCoroutine(ManualRotationOverride(targetRotation2));
     }
     public void SkippingControlStop()
     {
@@ -209,6 +277,14 @@ public class Place_Asa : MonoBehaviour
         while (!isSkipping)
         {
             asaObj.transform.position = endPos;
+            yield return null;
+        }
+    }
+    private IEnumerator ManualRotationOverride(Quaternion look)
+    {
+        while (!isSkipping)
+        {
+            asaObj.transform.rotation = look;
             yield return null;
         }
     }

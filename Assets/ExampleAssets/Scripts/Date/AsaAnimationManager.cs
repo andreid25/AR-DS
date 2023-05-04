@@ -20,7 +20,7 @@ public class AsaAnimationManager : MonoBehaviour
     }
     void Start()
     {
-        Look(.3f, 100f);
+        Look(.1f, 100f);
     }
 
     public void Idle()
@@ -447,6 +447,7 @@ public class AsaAnimationManager : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        head.weight = intensity / 100f;
     }
 
     //skipping controls

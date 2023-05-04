@@ -9,10 +9,11 @@ using TMPro;
 public class Phone_Menus : MonoBehaviour
 {
     [SerializeField] private Image batteryOutside, batteryInside, startDateButton;
-    [SerializeField] private TMP_Text time, collectionHeader;
-    [SerializeField] private GameObject phoneBG, bottomBar, dateBG, settingsOptions, settingsBG, topBar, credits, creditsTwo, backButton, plushText, earsText, noItemsText;
+    [SerializeField] private TMP_Text time;
+    [SerializeField] private GameObject phoneBG, bottomBar, dateBG, settingsOptions, settingsBG, topBar, credits, creditsTwo, plushText, earsText, noItemsText;
 
     [SerializeField] private GameObject soundsOption, notificationsOption, maleOption, femaleOption, enbyOption;
+    [SerializeField] private GameObject dateIntroScreen, collectionIntroScreen; //intro screens
     [SerializeField] private AudioSource click;
 
     private bool soundsOn, notificationsOn, maleOn, femaleOn, enbyOn;
@@ -26,16 +27,16 @@ public class Phone_Menus : MonoBehaviour
         enbyOn = true;
 
         //TEST CODE delete later
-        /*FindObjectOfType<GlobalData>().PlushAcquired();
-        FindObjectOfType<GlobalData>().CatEarsAcquired();*/
+        //FindObjectOfType<GlobalData>().PlushAcquired();
+        //FindObjectOfType<GlobalData>().CatEarsAcquired();
     }
     void Start()
     {
+        StopAllCoroutines();
         batteryOutside.enabled = true;
         batteryInside.enabled = true;
         bottomBar.SetActive(true);
         topBar.SetActive(false);
-        backButton.SetActive(false);
 
         //initialize phone menu
         phoneBG.SetActive(true);
@@ -45,7 +46,6 @@ public class Phone_Menus : MonoBehaviour
 
         //texts
         time.enabled = true;
-        collectionHeader.enabled = false;
         noItemsText.SetActive(false);
 
         settingsOptions.SetActive(false);
@@ -55,6 +55,9 @@ public class Phone_Menus : MonoBehaviour
 
         plushText.SetActive(false);
         earsText.SetActive(false);
+
+        dateIntroScreen.SetActive(false);
+        collectionIntroScreen.SetActive(false);
 
         FindObjectOfType<CatEars>().Reset();
         FindObjectOfType<AsaPlush>().Reset();
@@ -63,34 +66,7 @@ public class Phone_Menus : MonoBehaviour
     public void StartMenu()
     {
         click.Play();
-        //initialize perma UI
-        batteryOutside.enabled = true;
-        batteryInside.enabled = true;
-        bottomBar.SetActive(true);
-        topBar.SetActive(false);
-        backButton.SetActive(false);
-
-        //initialize phone menu
-        phoneBG.SetActive(true);
-
-        //date screen
-        dateBG.SetActive(false);
-
-        //texts
-        time.enabled = true;
-        collectionHeader.enabled = false;
-        noItemsText.SetActive(false);
-
-        settingsOptions.SetActive(false);
-        settingsBG.SetActive(false);
-        credits.SetActive(false);
-        creditsTwo.SetActive(false);
-
-        plushText.SetActive(false);
-        earsText.SetActive(false);
-
-        FindObjectOfType<CatEars>().Reset();
-        FindObjectOfType<AsaPlush>().Reset();
+        Start();
     }
     
     /*private IEnumerator Start()
@@ -116,9 +92,14 @@ public class Phone_Menus : MonoBehaviour
     {
         click.Play();
         //initialize perma UI
-        topBar.SetActive(false);
-        backButton.SetActive(true);
+        dateIntroScreen.SetActive(true);
+        StartCoroutine(CoDateMenu());
 
+    }
+    IEnumerator CoDateMenu()
+    {
+        yield return new WaitForSeconds(.6f);
+        dateIntroScreen.SetActive(false);
         //initialize phone menu
         phoneBG.SetActive(false);
 
@@ -127,26 +108,40 @@ public class Phone_Menus : MonoBehaviour
     }
     public void CollectionMenu()
     {
+        collectionIntroScreen.SetActive(true);
         click.Play();
+        StartCoroutine(CoCollectionMenu());
+        
+    }
+    IEnumerator CoCollectionMenu()
+    {
+        yield return new WaitForSeconds(.6f);
+        collectionIntroScreen.SetActive(false);
         if (!(FindObjectOfType<GlobalData>().CollectionActive()))
         {
             noItemsText.SetActive(true);
         }
         //initialize perma UI
         topBar.SetActive(true);
-        backButton.SetActive(true);
 
         //initialize phone menu
         phoneBG.SetActive(false);
-
-        collectionHeader.enabled = true;
+    }
+    public void SettingsApp()
+    {
+        settingsBG.SetActive(true);
+        StartCoroutine(CoSettingsApp());
+    }
+    IEnumerator CoSettingsApp()
+    {
+        yield return new WaitForSeconds(.6f);
+        Settings();
     }
     public void Settings()
     {
         click.Play();
         //initialize perma UI
         topBar.SetActive(true);
-        backButton.SetActive(true);
 
         //initialize phone menu
         phoneBG.SetActive(false);
@@ -161,11 +156,9 @@ public class Phone_Menus : MonoBehaviour
         click.Play();
         //initialize perma UI
         topBar.SetActive(true);
-        backButton.SetActive(true);
 
         //initialize phone menu
         phoneBG.SetActive(false);
-        collectionHeader.enabled = false;
 
         settingsOptions.SetActive(false);
         credits.SetActive(true);
@@ -176,11 +169,9 @@ public class Phone_Menus : MonoBehaviour
         click.Play();
         //initialize perma UI
         topBar.SetActive(true);
-        backButton.SetActive(true);
 
         //initialize phone menu
         phoneBG.SetActive(false);
-        collectionHeader.enabled = false;
 
         settingsOptions.SetActive(false);
         credits.SetActive(false);
@@ -291,5 +282,12 @@ public class Phone_Menus : MonoBehaviour
     {
         click.Play();
         Loader.Load(Loader.Scene.Date);
+    }
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            Loader.Load(Loader.Scene.PhonePickup);
+        }
     }
 }

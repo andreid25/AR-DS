@@ -5,7 +5,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
 
-public class AR_Asa_UI : MonoBehaviour
+public class AR_Asa_UI : MonoBehaviour //TODO: go back to instructions
 {
     [SerializeField] private CanvasGroup blackBG, startText, startButton, failText, endWalkButton, walkingInstructions, letsGoButton;
     [SerializeField] private CanvasGroup completeText, youGotText, plushImage, mainMenuButton, mainMenuButtonText;
@@ -170,5 +170,12 @@ public class AR_Asa_UI : MonoBehaviour
     public void PositionDebug(Vector3 position)
     {
         positionText.text = position.ToString();
+    }
+    void OnApplicationFocus(bool hasFocus)
+    {
+        if (!hasFocus)
+        {
+            Loader.Load(Loader.Scene.PhonePickup);
+        }
     }
 }

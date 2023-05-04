@@ -119,6 +119,7 @@ public class DialogueTrigger : MonoBehaviour
         }
         else if (dialogueSet == "Skipping")
         {
+            //UnityEngine.Debug.Log("In Skipping dialogue manager");
             switch (dialogueBranch)
             {
                 case "Start":
@@ -224,7 +225,7 @@ public class DialogueTrigger : MonoBehaviour
                                 dialogue.Add("Hey... it's only somewhat pathetic...");
                                 anims.Add("dissapointed");
                                 dialogue.Add("It's just who I am though!");
-                                anims.Add("idle");
+                                anims.Add("dissapointed");
                                 sad = true;
                                 happiness--;
                                 break;
@@ -340,8 +341,9 @@ public class DialogueTrigger : MonoBehaviour
                     if (setPart == 1)
                     {
                         sad = false;
+                        dialogueBranch = "Art";
                         FindObjectOfType<AsaAnimationManager>().SkippingStop();
-                        UnityEngine.Debug.Log("In Last Topic");
+                        UnityEngine.Debug.Log("In Art Topic");
                         setPart = 2;
 
                         dialogue.Add("All this walking and sightseeing is making me think about stuff I should be drawing.");
@@ -355,14 +357,16 @@ public class DialogueTrigger : MonoBehaviour
                         options.Add("Classical art.");
                         FindObjectOfType<Date_Dialogue_Manager>().StartDialogue(dialogue, options, anims);
                     }
-                    if (setPart == 2)
+                    else if (setPart == 2)
                     {
                         dialogueBranch = "Return";
                         setPart = 1;
-                        
+                        UnityEngine.Debug.Log("In part 2");
+
                         switch (responseGiven)
                         {
-                            case 1:
+                            case 1: //TODO: see why this doesn't work
+                                UnityEngine.Debug.Log("In case 1");
                                 dialogue.Add("Waste of time?!");
                                 anims.Add("angry");
                                 dialogue.Add("Well even if you think that, that doesn't change that I think it's cool!");
@@ -371,6 +375,7 @@ public class DialogueTrigger : MonoBehaviour
                                 happiness--;
                                 break;
                             case 2:
+                                UnityEngine.Debug.Log("In case 2");
                                 dialogue.Add("Ah modern art...");
                                 anims.Add("think");
                                 dialogue.Add("Actually, me too!");
@@ -382,6 +387,7 @@ public class DialogueTrigger : MonoBehaviour
                                 happiness++;
                                 break;
                             case 3:
+                                UnityEngine.Debug.Log("In case 2");
                                 dialogue.Add("Classical huh...");
                                 anims.Add("think");
                                 dialogue.Add("Yeah I get it. Painters from the past were insanely skilled!");
@@ -555,7 +561,7 @@ public class DialogueTrigger : MonoBehaviour
                 FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
                 break;
             case 1:
-                dialogueBranch = "Nya";
+                dialogueBranch = "Art";
                 setPart = 1;
                 topicsDiscussed = 2;
 
@@ -563,7 +569,7 @@ public class DialogueTrigger : MonoBehaviour
                 FindObjectOfType<AR_Asa_UI>().SkippingConversationStart();
                 break;
             case 2:
-                dialogueBranch = "Art";
+                dialogueBranch = "Nya";
                 setPart = 1;
                 topicsDiscussed = 3;
 

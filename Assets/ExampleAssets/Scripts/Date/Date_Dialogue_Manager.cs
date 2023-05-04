@@ -42,7 +42,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
 
     public void StartDialogue (List<string> dialogue, List<string> options, List<string> animsGiven)
     {
-        UnityEngine.Debug.Log("In StartDialogue()");
+        //UnityEngine.Debug.Log("In StartDialogue()");
         responses = options;
 
         dialogueBox.enabled = true;
@@ -61,7 +61,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
         {
             anims.Enqueue(animation);
         }
-        UnityEngine.Debug.Log(sentences);
+        //UnityEngine.Debug.Log(sentences);
 
         DisplayNextSentence();
         AnimationQueue();
@@ -70,7 +70,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
     //call appropriate function for animation manager
     private void AnimationQueue()
     {
-        UnityEngine.Debug.Log("Reached queue");
+        //UnityEngine.Debug.Log("Reached queue");
         string animToPlay = anims.Dequeue();
         if (currentAnim == animToPlay)
         {
@@ -130,7 +130,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
     //displays the next sentence by creating a queue
     public void DisplayNextSentence()
     {
-        UnityEngine.Debug.Log("In DisplayNextSentence()");
+        //UnityEngine.Debug.Log("In DisplayNextSentence()");
         if (sentences.Count == 0)
         {
             if (responses.Count != 0)
@@ -152,7 +152,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
 
     IEnumerator TypeSentence (string sentence)
     {
-        UnityEngine.Debug.Log("In TypeSentence()");
+        //UnityEngine.Debug.Log("In TypeSentence()");
         dialogueText.text = "";
         int charsDisplayed = 0;
         foreach(char letter in sentence.ToCharArray())
@@ -249,7 +249,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
     void EndDialogue()
     {
         //code here to either end conversation and go back to dialogue trigger or deal with selected options.
-        UnityEngine.Debug.Log("End of Conversation");
+        //UnityEngine.Debug.Log("End of Conversation");
         dialogueBox.enabled = false;
         dialogueText.enabled = false;
         dialogueAnimator.SetBool("IsOpen", false);

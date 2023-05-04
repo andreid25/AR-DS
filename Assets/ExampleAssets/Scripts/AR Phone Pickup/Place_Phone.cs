@@ -39,13 +39,17 @@ public class Place_Phone : MonoBehaviour
         canPlace = true;
         StartCoroutine(CoPlacePhoneAllowed());
     }
+    public void DisablePhonePlace()
+    {
+        canPlace = false;
+    }
 
     public IEnumerator CoPlacePhoneAllowed()
     {
         int attemptCount = 0;
+        yield return new WaitForSeconds(.6f);
         while (canPlace)
         {
-            yield return new WaitForSeconds(.2f);
             //UnityEngine.Debug.Log(Camera.main.transform.forward);
             Ray ray = new Ray(Camera.main.transform.position, Camera.main.transform.forward);
             if (aRRaycastManager.Raycast(ray, hits, TrackableType.PlaneWithinPolygon))
@@ -61,83 +65,34 @@ public class Place_Phone : MonoBehaviour
                 Vector3 direction = cameraPosition - position;
                 Quaternion targetRoation = Quaternion.LookRotation(direction);
                 obj.transform.rotation = targetRoation;
+                FindObjectOfType<AR_Pone_UI>().HideInstructionsButton();
 
                 //GameObject objTwo = Instantiate(prefabTwo, pose.position, pose.rotation);
 
                 //set color is not working on the object
                 //prefab.GetComponent<Renderer>().sharedMaterial.color = new Color(255, 0, 255);
-                StartCoroutine(WaitingToAllow());
+                //StartCoroutine(WaitingToAllow());
 
             }
             else
             {
                 attemptCount++;
-                if (attemptCount >= 40)
+                if (attemptCount >= 25)
                 {
                     canvas.GetComponent<AR_Pone_UI>().PlaceFail();
                     attemptCount = 0;
                     yield return new WaitForSeconds(2.8f);
                 }
             }
+            yield return new WaitForSeconds(.2f);
         }
     }
 
-
-    /*//methoda for tapping and untapping screen
-    private void OnEnable()
+    /*IEnumerator WaitingToAllow()
     {
-        EnhancedTouch.TouchSimulation.Enable();
-        EnhancedTouch.EnhancedTouchSupport.Enable();
-        EnhancedTouch.Touch.onFingerDown += FingerDown;
-    }
-    private void OnDisable()
-    {
-        EnhancedTouch.TouchSimulation.Disable();
-        EnhancedTouch.EnhancedTouchSupport.Disable();
-        EnhancedTouch.Touch.onFingerDown -= FingerDown;
-    }
-
-    //method for instantiating a model after tapping a plane
-    private void FingerDown(EnhancedTouch.Finger finger)
-    {
-        //don't do anything if multiple fingers are down or more than one is spawned
-        if (finger.index != 0) return;
-        if (!canPlace) return;
-
-        //code to instantiate object
-        if (aRRaycastManager.Raycast(finger.currentTouch.screenPosition, hits, TrackableType.PlaneWithinPolygon))
-        {
-            pose = hits[0].pose; 
-            GameObject obj = Instantiate(prefab, pose.position, pose.rotation);
-
-            Vector3 position = obj.transform.position;
-            position.y = 0f;
-            Vector3 cameraPosition = Camera.main.transform.position;
-            cameraPosition.y = 0f;
-            Vector3 direction = cameraPosition - position;
-            Quaternion targetRoation = Quaternion.LookRotation(direction);
-            obj.transform.rotation = targetRoation;
-
-            //GameObject objTwo = Instantiate(prefabTwo, pose.position, pose.rotation);
-
-            //set color is not working on the object
-            //prefab.GetComponent<Renderer>().sharedMaterial.color = new Color(255, 0, 255);
-            StartCoroutine(WaitingToAllow());
-
-            canPlace = false;
-            
-        }
-        else
-        {
-            canvas.GetComponent<AR_Pone_UI>().PlaceFail();
-        }
-    } */
-
-    IEnumerator WaitingToAllow()
-    {
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(.1f);
         //objTwo.GetComponent<Renderer>().material.color = new Color(0, 0, 255);
         //prefab.GetComponent<Renderer>().sharedMaterial.color = new Color(0, 0, 255);
         prefab.GetComponent<Phone_Model_Script>().TapPhoneAllow();
-    }
+    }*/
 }

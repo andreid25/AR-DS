@@ -27,19 +27,22 @@ public class Phone_Model_Script : MonoBehaviour
 
     void Awake()
     {
-        canTap = false;
         aRCam = GameObject.Find("AR Camera");
         aRCamera = GameObject.Find("AR Camera").GetComponent<Camera>(); ;
         layerMask = 1 << layerNumber;
 
         aRRaycastManager = GetComponent<ARRaycastManager>();
     }
-    public void TapPhoneAllow()
+    /*public void TapPhoneAllow()
     {
-        canTap = true;
-        UnityEngine.Debug.Log(canTap);
+        UnityEngine.Debug.Log("In TapPhoneAllowed");
+        StartCoroutine(Levitate());
+    }*/
+    void Start()
+    {
+        StartCoroutine(Levitate());
     }
-    void Update()
+    /*void Update()
     {
         //UnityEngine.Debug.Log(canTap);
         if (canTap == false)
@@ -66,21 +69,24 @@ public class Phone_Model_Script : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 
     IEnumerator Levitate()
     {
+        yield return new WaitForSeconds(1.5f);
         Vector3 phonePosition = phone.transform.position;
         Vector3 camPosition = aRCam.transform.position;
 
         //phonePosition.y = 0f;
         //camPosition.y = 0f;
 
-        Vector3 direction = camPosition - phonePosition;
+        /*Vector3 direction = camPosition - phonePosition;*/
         //direction.x = 0f;
-        Quaternion targetRoation = Quaternion.LookRotation(direction);
+        //Quaternion targetRoation = Quaternion.LookRotation(direction);
+        Quaternion targetRoation = Camera.main.transform.rotation;
         UnityEngine.Debug.Log(targetRoation.eulerAngles);
         //targetRoation.x = -90f;
+        targetRoation *= Quaternion.Euler(0, 180, 0);
         targetRoation *= Quaternion.Euler(90, 0, 0);
         UnityEngine.Debug.Log(targetRoation.eulerAngles);
 
@@ -102,17 +108,48 @@ public class Phone_Model_Script : MonoBehaviour
             movePhone = phonePosition + ((movePhone - phonePosition) / (15-i));
             phone.transform.DOMove(movePhone, 0.1f);
 
-            direction = camPosition - phonePosition;
+            /*direction = camPosition - phonePosition;
             targetRoation = Quaternion.LookRotation(direction);
+            targetRoation *= Quaternion.Euler(90, 0, 0);
+            UnityEngine.Debug.Log(targetRoation.eulerAngles);*/
+
+            targetRoation = Camera.main.transform.rotation;
+            UnityEngine.Debug.Log(targetRoation.eulerAngles);
+            //targetRoation.x = -90f;
+            targetRoation *= Quaternion.Euler(0, 180, 0);
             targetRoation *= Quaternion.Euler(90, 0, 0);
             UnityEngine.Debug.Log(targetRoation.eulerAngles);
 
             phone.transform.DORotate(targetRoation.eulerAngles, 0.1f);
             yield return new WaitForSeconds(0.1f);
         }
+        StartCoroutine(WaitAndLoad());
+        while (true)
+        {
+            phonePosition = phone.transform.position;
+            camPosition = aRCam.transform.position;
+            Vector3 movePhone = Camera.main.transform.position + Camera.main.transform.forward * 0.11f;
+            movePhone = phonePosition + ((movePhone - phonePosition));
+            phone.transform.position =movePhone;
+
+            /*direction = camPosition - phonePosition;
+            targetRoation = Quaternion.LookRotation(direction);
+            targetRoation *= Quaternion.Euler(90, 0, 0);
+            UnityEngine.Debug.Log(targetRoation.eulerAngles);*/
+            targetRoation = Camera.main.transform.rotation;
+            UnityEngine.Debug.Log(targetRoation.eulerAngles);
+            //targetRoation.x = -90f;
+            targetRoation *= Quaternion.Euler(0, 180, 0);
+            targetRoation *= Quaternion.Euler(90, 0, 0);
+            UnityEngine.Debug.Log(targetRoation.eulerAngles);
+
+            phone.transform.rotation = targetRoation;
+            yield return null;
+        }
+    }
+    IEnumerator WaitAndLoad()
+    {
         yield return new WaitForSeconds(0.5f);
-
-
         Loader.Load(Loader.Scene.PhoneMenus);
     }
 }
