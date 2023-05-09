@@ -11,7 +11,7 @@ public class AR_Pone_UI : MonoBehaviour //TODO: Test instructions button
     [SerializeField] private CanvasGroup blackBG, startButton, startButtonText, failText, startText, instructionsButton;
     [SerializeField] private GameObject aRScriptObject;
 
-    bool firstTimeInstructions, instructionsUp;
+    bool instructionsUp;
 
     void Awake()
     {
@@ -23,7 +23,6 @@ public class AR_Pone_UI : MonoBehaviour //TODO: Test instructions button
         startButton.alpha = 0;
         startButtonText.alpha = 0;
         instructionsButton.alpha = 0;
-        firstTimeInstructions = true;
         instructionsUp = true;
 
         FindObjectOfType<GlobalData>().Reset();

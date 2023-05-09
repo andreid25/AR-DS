@@ -12,10 +12,11 @@ public class AsaAnimationManager : MonoBehaviour
     [SerializeField] private Rig head;
 
     private GameObject realPlush, realEars;
-    private bool plushExists;
+    private bool plushExists, isSkipping;
     void Awake()
     {
         plushExists = false;
+        isSkipping = false;
         //headLooking = true;
     }
     void Start()
@@ -439,7 +440,7 @@ public class AsaAnimationManager : MonoBehaviour
     }
     private IEnumerator CoLook(float time, float intensity)
     {
-        float currentIntensity = head.weight;
+        float currentIntensity = head.weight * 100;
         float elapsedTime = 0;
         while (elapsedTime < time)
         {
@@ -454,6 +455,7 @@ public class AsaAnimationManager : MonoBehaviour
     public void SkippingStart(bool sad)
         //add easing here
     {
+        isSkipping = true;
         StartCoroutine(ExitAnim());
         StartCoroutine(CoSkippingStart(sad));
         //FindObjectOfType<AR_Asa_UI>().Skipping();
@@ -465,24 +467,27 @@ public class AsaAnimationManager : MonoBehaviour
         {
             yield return null;
         }
-        /*if (sad)
-        {
-            asaAnimator.SetBool("IsWalking", true);
-        }
-        else
-        {*/
+        if (isSkipping) {
             asaAnimator.SetBool("IsSkipping", true);
-        //}
-        FindObjectOfType<Place_Asa>().SkippingControl();
+            FindObjectOfType<Place_Asa>().SkippingControl();
+        }
+ 
+        
     }
-    public void SkippingStop()
+    public void SkippingStop() //TODO: Test if asa still skips pressing the end walking button after last dialogue
     {
+        isSkipping = false;
         StartCoroutine(ExitAnim());
         StartCoroutine(CoSkippingStop());
     }
     private IEnumerator CoSkippingStop()
     {
         yield return new WaitForSeconds(1f);
+        while (!(asaAnimator.GetCurrentAnimatorStateInfo(0).IsName("Skip")))
+        {
+             yield return null;
+        }
+        yield return null;
         asaAnimator.SetBool("IsSkipping", false);
         //asaAnimator.SetBool("IsWalking", false);
         FindObjectOfType<Place_Asa>().SkippingControlStop();

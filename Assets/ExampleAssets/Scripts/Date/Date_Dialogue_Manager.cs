@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 public class Date_Dialogue_Manager : MonoBehaviour
 {
     [SerializeField] private TMP_Text dialogueText, option1Text, option2Text, option3Text;
-    [SerializeField] private Image dialogueBox, optionsBox1, optionsBox2, optionsBox3;
+    [SerializeField] private Image dialogueBox, optionsBox1, optionsBox2, optionsBox3, bouncingTriangle;
 
     [SerializeField] private Animator dialogueAnimator, options1Animator, options2Animator, options3Animator;
     [SerializeField] private AudioSource click, talk;
@@ -28,6 +28,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
         optionsBox1.enabled = false;
         optionsBox2.enabled = false;
         optionsBox3.enabled = false;
+        bouncingTriangle.enabled = false;
 
         dialogueText.enabled = false;
         option1Text.enabled = false;
@@ -165,6 +166,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
                 yield return null;
             }
         }
+        bouncingTriangle.enabled = true;
     }
 
     void CheckResponses()
@@ -261,6 +263,7 @@ public class Date_Dialogue_Manager : MonoBehaviour
     {
         if ((Input.touchCount > 0) && (Input.GetTouch(0).phase == TouchPhase.Began) && dialogueBox.enabled)
         {
+            bouncingTriangle.enabled = false;
             click.Play();
             DisplayNextSentence();
             AnimationQueue();

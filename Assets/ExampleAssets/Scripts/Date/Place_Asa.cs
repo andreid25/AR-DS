@@ -36,21 +36,27 @@ public class Place_Asa : MonoBehaviour
     }
     public void PlaceAsaAllowed()
     {
+        asaPlaced = false;
         StartCoroutine(CoPlaceAsaAllowed());
+    }
+    public void DisableAsaPlace()
+    {
+        asaPlaced = true;
     }
 
     private IEnumerator CoPlaceAsaAllowed()
     {
+        yield return new WaitForSeconds(1.1f);
         int attemptCount = 0;
         while (!asaPlaced)
         {
-            yield return new WaitForSeconds(.5f);
 
             //UnityEngine.Debug.Log(Camera.main.transform.forward);
             Ray ray = new Ray(Camera.main.transform.position, new Vector3(Camera.main.transform.forward.x, -.75f, Camera.main.transform.forward.z));
 
             if (aRRaycastManager.Raycast(ray, hits, TrackableType.PlaneWithinPolygon))
             {
+                FindObjectOfType<AR_Asa_UI>().HideInstructions();
                 asaPlaced = true;
                 Pose pose = hits[0].pose;
                 asaObj = Instantiate(prefab, pose.position, pose.rotation);
@@ -66,7 +72,7 @@ public class Place_Asa : MonoBehaviour
                 asaObj.transform.rotation = targetRotation;
 
                 asaObj.AddComponent<ARAnchor>();
-                //objRotation.y = 180f;
+                //StartCoroutine(TurnToYou());
                 yield return new WaitForSeconds(6.2f);
                 FindObjectOfType<DialogueTrigger>().StartDateDialogue1();
                 //StartCoroutine(AsaPlace());
@@ -82,7 +88,8 @@ public class Place_Asa : MonoBehaviour
                     yield return new WaitForSeconds(2.8f);
                 }
             }
-            //StartCoroutine(TurnToYou());
+            yield return new WaitForSeconds(.5f);
+            
         }
     }
     /*private IEnumerator AsaPlace()
@@ -93,16 +100,27 @@ public class Place_Asa : MonoBehaviour
             yield return new WaitForSeconds(.2f);
         }
     }*/
-    /*private IEnumerator TurnToYou() //TODO: Fuck this fix it if you ever hate yourself enough
+    private IEnumerator TurnToYou() //One day this will work
     {
-        float camRotation;
-        float asaRotation;
+        //float camRotation;
+        //float asaRotation;
         while (!isSkipping)
         {
-            asaRotation = asaObj.transform.rotation.y;
-            camRotation = Camera.main.transform.rotation.y;
+            Vector3 position = asaObj.transform.position;
+            position.y = 0f;
+            Vector3 cameraPosition = Camera.main.transform.position;
+            cameraPosition.y = 0f;
+            Vector3 direction = cameraPosition - position;
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            //asaObj.transform.rotation = targetRotation;
+            Quaternion currentRotation = asaObj.transform.rotation;
 
-            UnityEngine.Debug.Log(camRotation);
+            //float angleDifference = Quaternion.Angle(targetRotation, currentRotation);
+
+            float asaRotation = asaObj.transform.rotation.y;
+            float camRotation = Camera.main.transform.rotation.y;
+
+            //UnityEngine.Debug.Log(angleDifference);
             if (camRotation > 0)
             {
                 camRotation -= 1; //check if this is right
@@ -112,25 +130,9 @@ public class Place_Asa : MonoBehaviour
                 camRotation += 1f;
             }
             float rotationDifference = camRotation - asaRotation;
-            if (rotationDifference > .20f)
+            if (rotationDifference > .3f || rotationDifference < -.3f)
             {
-                float timePassed = 0f;
-                while (timePassed < 1f)
-                {
-                    asaObj.transform.RotateAround(asaObj.transform.position, asaObj.transform.up, Time.deltaTime * -15f);
-                    yield return null;
-                    timePassed += Time.deltaTime;
-                }
-            }
-            else if (rotationDifference < .20f)
-            {
-                float timePassed = 0f;
-                while (timePassed < 1f)
-                {
-                    asaObj.transform.RotateAround(asaObj.transform.position, asaObj.transform.up, Time.deltaTime * 15f);
-                    yield return null;
-                    timePassed += Time.deltaTime;
-                }
+                asaObj.transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, 2f);
             }
             /*asaDirection = asaObj.transform.rotation.EulerAngles * Vector3.forward;
             var forwardB = Camera.main.transform.rotation.EulerAngles * Vector3.forward;
@@ -140,11 +142,10 @@ public class Place_Asa : MonoBehaviour
 
             float angleDiff = Mathf.DeltaAngle(angleA, angleB);
 
-            UnityEngine.Debug.Log("This is hard");
-
+            UnityEngine.Debug.Log("This is hard");*/
             yield return null;
         }
-    }*/
+    }
     public void SkippingControl()
     {
         Destroy(GetComponent<ARAnchor>());
@@ -167,7 +168,7 @@ public class Place_Asa : MonoBehaviour
         float asaDistance;
 
         FindObjectOfType<AsaAnimationManager>().Look(.2f, 70f);
-        while (isSkipping) //TODO: test lerp to ideal distance
+        while (isSkipping)
         {
             Vector3 asaStartLocation = asaObj.transform.position;
 
@@ -265,6 +266,7 @@ public class Place_Asa : MonoBehaviour
         StartCoroutine(ManualPosOverride(endPos));
         yield return new WaitForSeconds(1f);
         asaObj.AddComponent<ARAnchor>();
+        //StartCoroutine(TurnToYou());
         StartCoroutine(ManualRotationOverride(targetRotation2));
     }
     public void SkippingControlStop()

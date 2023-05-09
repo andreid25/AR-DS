@@ -7,10 +7,10 @@ using TMPro;
 
 public class AR_Asa_UI : MonoBehaviour //TODO: go back to instructions
 {
-    [SerializeField] private CanvasGroup blackBG, startText, startButton, failText, endWalkButton, walkingInstructions, letsGoButton;
+    [SerializeField] private CanvasGroup blackBG, startText, startButton, failText, endWalkButton, walkingInstructions, letsGoButton, instructionsButton;
     [SerializeField] private CanvasGroup completeText, youGotText, plushImage, mainMenuButton, mainMenuButtonText;
     [SerializeField] private CanvasGroup noRewardsText, earsImage;
-    [SerializeField] private Button startButtonEnabler, mainMenuButtonEnabler, endWalkButtonEnabler, letsGoButtonEnabler;
+    [SerializeField] private Button startButtonEnabler, mainMenuButtonEnabler, endWalkButtonEnabler, letsGoButtonEnabler, instructionsButtonEnabler;
     [SerializeField] private GameObject aRScriptObject;
     [SerializeField] private RectTransform plushReward, earsReward;
     [SerializeField] private AudioSource dateEnd, click;
@@ -42,6 +42,9 @@ public class AR_Asa_UI : MonoBehaviour //TODO: go back to instructions
         letsGoButton.alpha = 0;
         letsGoButtonEnabler.interactable = false;
 
+        instructionsButton.alpha = 0;
+        instructionsButtonEnabler.interactable = false;
+
         //letsGoButton.blocksRaycasts = false;
     }
     private void Start()
@@ -53,8 +56,9 @@ public class AR_Asa_UI : MonoBehaviour //TODO: go back to instructions
     }
     private IEnumerator CoStart()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(.6f);
         startButtonEnabler.interactable = true;
+        startButton.blocksRaycasts = true;
     }
     public void StartButton()
     {
@@ -64,7 +68,23 @@ public class AR_Asa_UI : MonoBehaviour //TODO: go back to instructions
         startButton.DOFade(0, 1.0f);
         startButtonEnabler.interactable = false;
         startButton.blocksRaycasts = false;
+
+        instructionsButton.DOFade(1, 1.0f);
+        instructionsButtonEnabler.interactable = true;
+
         aRScriptObject.GetComponent<Place_Asa>().PlaceAsaAllowed();
+    }
+    public void Instructions()
+    {
+        aRScriptObject.GetComponent<Place_Asa>().DisableAsaPlace();
+        Start();
+        instructionsButton.DOFade(0, .3f);
+        //instructionsButtonEnabler.interactable = false;
+    }
+    public void HideInstructions()
+    {
+        instructionsButton.DOFade(0, .3f);
+        instructionsButtonEnabler.interactable = false;
     }
 
     public void PlaceFail()
